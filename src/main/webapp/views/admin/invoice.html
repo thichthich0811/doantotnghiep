@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="row">
+                <div class="col-sm-12 header-sp">
+                    <form class="row filterdonhang">
+                        <div class="col-md-2">
+                            <label>Từ ngày</label>
+                            <input th:value="${param.fromDate != null ? param.fromDate:''}" name="fromDate" type="date" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label>Đến ngày</label>
+                            <input th:value="${param.toDate != null? param.toDate:''}" name="toDate" type="date" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label>Loại thanh toán</label>
+                            <select name="trangThaiThanhToanStr" class="form-control">
+                                <option value="">--- Tất cả ---</option>
+                                <option value="false" th:selected="${param.trangThaiThanhToanStr != null && param.trangThaiThanhToanStr[0] == 'false'?true:false}">Chưa thanh toán</option>
+                                <option value="true" th:selected="${param.trangThaiThanhToanStr != null && param.trangThaiThanhToanStr[0] == 'true'?true:false}">Đã thanh toán</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Trạng thái đơn hàng</label>
+                            <select name="trangThaiDonHang" class="form-control">
+                                <option value="">Tất cả</option>
+                                <option th:selected="${param.trangThaiDonHang != null && param.trangThaiDonHang[0] == 'Đang chờ xác nhận'?true:false}" value="Đang chờ xác nhận">Đang chờ xác nhận</option>
+                                <option th:selected="${param.trangThaiDonHang != null && param.trangThaiDonHang[0] == 'Đã xác nhận đơn hàng'?true:false}" value="Đã xác nhận đơn hàng">Đã xác nhận đơn hàng</option>
+                                <option th:selected="${param.trangThaiDonHang != null && param.trangThaiDonHang[0] == 'Đang giao'?true:false}" value="Đang giao">Đang giao</option>
+                                <option th:selected="${param.trangThaiDonHang != null && param.trangThaiDonHang[0] == 'Đã nhận hàng'?true:false}" value="Đã nhận hàng">Đã nhận hàng</option>
+                                <option th:selected="${param.trangThaiDonHang != null && param.trangThaiDonHang[0] == 'Đã hủy'?true:false}" value="Đã hủy">Đã hủy</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>&ThinSpace;</label>
+                            <button onclick="loadInvoice()" class="btn btn-danger form-control"><i class="fa fa-filter"></i> Lọc</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wrapper">
+                        <table id="example" class="table table-cart table-order">
+                            <thead class="thead-default">
+                                <tr>
+                                    <th>Mã</th>
+                                    <th class="floatr">Ngày mua</th>
+                                    <th>Địa chỉ</th>
+                                    <th class="floatr">Giá trị<br>đơn hàng</th>
+                                    <th>Trạng thái thanh toán</th>
+                                    <th class="floatr">Trạng thái vận chuyển</th>
+                                    <th style="visibility: hidden"></th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listinvoice">
+                                <tr th:each="d : ${listInvoice}">
+                                    <td><a data-bs-toggle="modal" th:data-bs-target="'#modaldeail'+${d.id}" class="yls pointer-event" th:text="${d.id}"></a></td>
+                                    <td class="floatr" th:text="${d.createDate}">11:37 21/09/2023</td>
+                                    <td th:text="${d.address}"></td>
+                                    <td class="floatr"><span class="yls">[[${#numbers.formatDecimal(d.totalPrice, 0, 'COMMA', 0, 'POINT')}]].đ</span></td>
+                                    <td><span class="span_pending" th:text="${d.paymentStatus == false?'Chưa thanh toán':'Đã thanh toán'}"></span></td>
+                                    <td class="floatr"><span class="span_" th:text="${d.orderStatus}"></span></td>
+                                    <td>
+                                        <div class="modal fade" th:id="'modaldeail'+${d.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-fullscreen-sm-down modeladdres">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Chi tiết đơn hàng</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row shipinfor">
+                                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                                <span class="ttshipinfor">Địa chỉ giao hàng</span>
+                                                                <div class="blockinfor">
+                                                                    <p class="tennguoinhan" id="tennguoinhan">HIẾU TRẦN</p>
+                                                                    <span>Địa chỉ: <span th:text="${d.address}"></span></span>
+                                                                    <br><span class="phoneacc">Số điện thoại: <span th:text="${d.phone}"></span></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                                                <span class="ttshipinfor">Ghi chú</span>
+                                                                <div class="blockinfor">
+                                                                    <span id="ghichunh" th:text="${d.note}">Không có ghi chú</span>
+                                                                </div>
+                                                            </div>
+                                                        </div><br><br>
+                                                        <table class="table table-cart table-order" id="detailInvoice">
+                                                            <thead class="thead-default theaddetail">
+                                                            <tr>
+                                                                <th>Sản phẩm</th>
+                                                                <th></th>
+                                                                <th>Đơn giá</th>
+                                                                <th>Số lượng</th>
+                                                                <th>Tổng</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody id="listDetailinvoice">
+                                                            <tr th:each="detail : ${d.orderDetails}">
+                                                                <td><img th:src="${detail.products.image}" class="imgdetailacc"></td>
+                                                                <td>
+                                                                    <a target="_blank" th:href="@{sanphamchitiet(id=${detail.products.id})}" class="text-decoration-none" th:text="${detail.products.productName}"></a><br>
+                                                                </td>
+                                                                <td>[[${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+                                                                <td class="sldetailacc" th:text="${detail.quantity}"></td>
+                                                                <td class="pricedetailacc yls">[[${#numbers.formatDecimal(detail.price * detail.quantity, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table><br><br><br><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i data-bs-toggle="modal" th:data-bs-target="'#modaldeail'+${d.id}" class="fa fa-eye iconaction"></i>
+                                        <i th:attr="onclick=|openEditModal('${d.id}', '${d.orderStatus}')|" data-bs-toggle="modal" data-bs-target="#capnhatdonhang" class="fa fa-edit iconaction"></i><br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="capnhatdonhang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cập nhật trạng thái đơn hàng</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                <div class="modal-body">
+                    <form method="post" action="update-status-invoice">
+                        <input name="invoiceId" type="hidden" id="iddonhangupdate">
+                        <select name="statusName" class="form-control" id="trangthaiupdate">
+                            <option value="Đang chờ xác nhận">Đang chờ xác nhận</option>
+                            <option value="Đã xác nhận đơn hàng">Đã xác nhận đơn hàng</option>
+                            <option value="Đang giao">Đang giao</option>
+                            <option value="Đã nhận hàng">Đã nhận hàng</option>
+                            <option value="Đã hủy">Đã hủy</option>
+                        </select><br><br>
+                        <button id="btncapnhat" class="btn btn-primary form-control action-btn">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script>
+    function openEditModal(id, sttName) {
+        console.log(sttName)
+        document.getElementById("btncapnhat").style.display = 'block'
+        var otp = '';
+        if(sttName == 'Đang chờ xác nhận'){
+            otp = ` <option selected value="Đã xác nhận đơn hàng">Đã xác nhận đơn hàng</option>
+                    <option value="Đã hủy">Đã hủy</option>`
+        }
+        if(sttName == 'Đã xác nhận đơn hàng'){
+            otp = ` <option selected value="Đang giao">Đang giao</option>
+                    <option value="Đã hủy">Đã hủy</option>`
+        }
+        if(sttName == 'Đang giao'){
+            otp = ` <option selected value="Đã nhận hàng">Đã nhận hàng</option>
+                    <option value="Đã hủy">Đã hủy</option>`
+        }
+        document.getElementById("trangthaiupdate").innerHTML = otp;
+        if(sttName == 'Đã nhận hàng' || sttName == 'Đã hủy'){
+            document.getElementById("btncapnhat").style.display = 'none'
+        }
+
+        document.getElementById('iddonhangupdate').value = id;
+        // document.getElementById('trangthaiupdate').value = sttName;
+    }
+</script>
+<script>
+    $('#example').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+        }
+    });
+</script>
+</html>

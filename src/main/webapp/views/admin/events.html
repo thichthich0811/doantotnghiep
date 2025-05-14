@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+  <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+  <div class="inner-wrapper">
+    <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+    <section role="main" class="content-body" id="main-content">
+      <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+      <div class="row">
+        <div class="col-sm-12 header-sp">
+          <form class="row">
+            <div class="col-md-3 col-sm-12">
+              <label th:class="lb-form">&ThinSpace;</label>
+              <a href="addevent" class="btn btn-primary form-control"><i class="fa fa-plus"></i> Thêm sự kiện</a>
+            </div>
+            <div class="col-md-3 col-sm-6 col-6">
+              <label class="lb-form">Từ ngày</label>
+              <input required name="start" type="date" th:class="form-control">
+            </div>
+            <div class="col-md-3 col-sm-6 col-6">
+              <label class="lb-form">Đến ngày</label>
+              <input required name="end" type="date" th:class="form-control">
+            </div>
+            <div class="col-md-3 col-sm-6 col-6">
+              <label th:class="lb-form">&ThinSpace;</label>
+              <button class="btn btn-primary d-block"><i class="fa fa-filter"></i> Lọc</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-12">
+          <div class="wrapper">
+            <table id="example" class="table table-striped tablefix">
+              <thead class="thead-tablefix">
+              <tr>
+                <th>STT</th>
+                <th>Tên sự kiện</th>
+                <th>Ảnh sự kiện</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày két thúc</th>
+                <th>Loại sự kiện</th>
+                <th class="sticky-col">Hành động</th>
+              </tr>
+              </thead>
+              <tbody id="listproduct">
+              <tr th:each="c, iterStat : ${listEvent}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${c.nameEvent}"></td>
+                <td><img th:src="${c.image}" th:class="imgtable"></td>
+                <td th:text="${c.dateStart}"></td>
+                <td th:text="${c.dateEnd}"></td>
+                <td th:text="${c.eventType}"></td>
+                <td class="sticky-col">
+                  <a class="delete-btn" th:href="@{delete-event(id=${c.id})}" onclick="return confirm('Xác nhận xóa?');"><i class="fa fa-trash-alt" ></i></a>
+                  <a class="edit-btn" th:href="@{addevent(id=${c.id})}"><i class="fa fa-edit" ></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+
+<script>
+  $('#example').DataTable({
+    language: {
+      url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+    }
+  });
+</script>
+<script>
+  function checkPass(){
+    var pass = document.getElementById("pass").value;
+    var repass = document.getElementById("repass").value;
+    if(pass != repass){
+      toastr.error("Mật khẩu không khớp");
+      return false;
+    }
+    return true
+  }
+</script>
+</html>

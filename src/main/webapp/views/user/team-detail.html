@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragment/libuser :: libheader"></th:block>
+</head>
+<body>
+<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+
+<section class="hero-wrap hero-wrap-2"
+         style="background-image: url('/user/images/bg-team.png');"
+         data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div
+                class="row no-gutters slider-text align-items-end justify-content-center">
+            <div class="col-md-9 ftco-animate mb-5 text-center">
+                <p class="breadcrumbs mb-0">
+						<span class="mr-2"><a href="index.html">Home <i
+                                class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a
+                        href="blog.html">Team <i class="fa fa-chevron-right"></i></a></span> <span>Team
+							Single <i class="fa fa-chevron-right"></i>
+						</span>
+                </p>
+                <h2 class="mb-0 bread">Team Single</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-degree-">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 row d-flex" th:each="s: ${team}">
+                <div class="col-lg-12 d-flex align-items-stretch ftco-animate">
+                    <div class="blog-entry col-md-12 d-md-flex">
+                        <img class="block-20 img bg-dark block-19 rounded"
+                             th:src="${team.avatar}" alt="" src="">
+                        <div class="ml-5 text p-4 bg-light d-flex flex-column">
+
+                            <h3 th:text="${team.nameTeam}" class="heading"
+                                style="color: #2E7D32; font-weight: bold;">
+                                <a href="#"></a>
+                            </h3>
+                            <div class="meta">
+                                <p class="fa fa-calendar"></p>
+                                <span th:text="${team.createDate}"></span>
+                            </div>
+                            <div class="d-flex ">
+                                <p class="lable_team">Thành viên:</p>
+                                <p th:text="${team.activeMember}" style="margin-right: 5px"></p>
+                                <p style="margin-right: 5px">/</p>
+                                <p th:text="${team.quantity}" style="margin-right: 5px"></p>
+                            </div>
+                            <div class="d-flex">
+                                <p class="lable_team">Môn thể thao :</p>
+                                <p th:text="${team.sportType.categoryName}"></p>
+                            </div>
+
+                            <div class="d-flex">
+                                <p class="lable_team">Liên hệ :</p>
+                                <p th:text="${team.contact}"></p>
+                            </div>
+
+                            <div class="d-flex">
+                                "
+                                <p th:text="${team.descriptions}" style="font-style: italic;"></p>
+                                "
+                            </div>
+
+                            <div class="submit-section align-self-end mt-auto">
+                                <!-- Chuyển đến trang Detail của Team được chọn -->
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- end -->
+
+            <div class="pt-5 mt-5 col-12" th:if="${thanhVien.size() > 0}">
+                <div class="d-flex">
+                    <h3 class="mb-5"></h3>
+                    <h3 class="mb-5 ml-2">Thành viên</h3>
+                </div>
+                <ul th:each="u:${thanhVien}" class="comment-list col-12">
+                    <li class="comment col-12 d-flex">
+                        <div class="col-8">
+                            <div class="vcard bio">
+                                <img class="rounded-circle border border-white"
+                                     src="/user/images/noavatar.jpg" alt=""
+                                     style="width: 60px; height: 60px;">
+                            </div>
+                            <div class="comment-body d-flex">
+                                <h3 th:text="${u.user.fullName}"></h3>
+                                <span class="ml-3 pr-3 pl-3 pt-1 rounded" style="background-color:#F7FF85" th:if=${u.user.id==userlogged.id}> Trưởng nhóm</span>
+
+                                <!-- Họ tên -->
+                            </div>
+                            <div>
+                                <p class="fa fa-calendar"></p>
+                                <span th:text="${u.joinDate}"></span>
+                            </div>
+                            <div>
+                                <p th:text="${u.infoUser}"></p>
+                            </div>
+
+                            <div class="meta metaDiv" style="display: none">
+                                <div class="d-flex">
+                                    <p>SDT :</p>
+                                    <p th:text="${u.user.phone}"></p>
+                                </div>
+                                <div class="d-flex">
+                                    <p>Email :</p>
+                                    <p th:text="${u.user.email}"></p>
+                                </div>
+                                <div class="d-flex">
+                                    <p>Địa chỉ :</p>
+                                    <p th:text="${u.user.address}"></p>
+                                </div>
+                            </div>
+                            <p class="showMoreParagraph">
+                                <a class="reply" onclick="showMore(event)">Xem thêm...</a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-12 infouser" id="descriptionModal"
+     th:if="${infouser == null || infouser == ''}">
+    <div class="col-4" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Giới thiệu về bản thân hoặc sở trường
+                    của bạn để mọi người hiểu hơn về bạn.</h5>
+                <button type="button" class="close" id="closeButton">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Đặt tên cho trường textarea -->
+                <form th:action="@{/team/updateinfoUser}"
+                      method="post">
+                    <input type="hidden" name="detailId" th:value="${detailId}" />
+                    <div class="form-group">
+                        <label>Giới thiệu:</label>
+                        <textarea th:value="${infouser}" class="form-control"
+                                  name="description" rows="4"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragment/footeruser :: footerUser"></div>
+
+
+</body>
+
+
+</html>

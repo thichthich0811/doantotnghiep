@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragment/libuser :: libheader"></th:block>
+    <style>
+        body {
+            background-color: #f8d7da;
+        }
+        .payment-failed-container {
+            margin-top: 100px;
+        }
+        .icon-failed {
+            font-size: 60px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+
+<div class="container text-center payment-failed-container" style="margin-top: 100px">
+    <div class="card border-danger shadow">
+        <div class="card-body">
+            <div class="icon-failed mb-3">
+                ❌
+            </div>
+            <h3 class="card-title text-danger">Thanh toán thất bại</h3>
+            <p class="card-text">Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại hoặc liên hệ với bộ phận hỗ trợ.</p>
+            <a href="/" class="btn btn-danger mt-3">Quay về trang chủ</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragment/footeruser :: footerUser"></div>
+
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:java="java.text.*">
+<head>
+<title>VT SPORT - Sân Thể Thao</title>
+	<th:block th:replace="fragment/libuser :: libheader"></th:block>
+
+</head>
+<body onload="setMinMaxDates()">
+
+<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('/user/images/backgroundField.gif');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div
+				class="row no-gutters slider-text align-items-end justify-content-center">
+				<div class="col-md-9 ftco-animate mb-5 text-center">
+					<p class="breadcrumbs mb-0">
+						<span class="mr-2"><a th:href="@{/sportify}">Trang Chủ
+								<i class="fa fa-chevron-right"></i>
+						</a></span> <span>Sân</span>
+					</p>
+					<h2 class="mb-0 bread">Sân</h2>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-11 d-flex  justify-content-center">
+					<h4 class="col-9"
+						style="color: #187498; font-family: time-new-roman; font-weight: 600; padding-left: 0px">Tìm
+						kiếm sân trống</h4>
+				</div>
+
+				<form class=" mb-4 pb-4 d-flex justify-content-center col-11 ">
+					<input
+						style="border-top: 3px solid #28a745; border-left: 3px solid #28a745; border-bottom: 3px solid #28a745; font-weight: lighter;"
+						id="dateInput" name="date" required
+						class="form-control rounded-0 col-2" type="date"
+						placeholder="Search" aria-label="Search">
+					<select
+						style="border-top: 3px solid #28a745; border-left: 3px solid #28a745; border-bottom: 3px solid #28a745; font-weight: lighter;"
+						name="typeId"
+						class="form-control rounded-0 custom-select  col-2">
+						<option th:each="c : ${sporttype}" th:value="${c.id}" th:text="${c.categoryName}"></option>
+					</select>
+					<select
+						style="border-top: 3px solid #28a745; border-left: 3px solid #28a745; border-bottom: 3px solid #28a745; font-weight: lighter;"
+						name="shiftId"
+						class=" form-control rounded-0 custom-select  col-3">
+						<option th:each="s : ${shift}" value="0" th:value="${s.id}" th:text="${s.nameShift}"></option>
+					</select>
+
+					<button style="border: 3px solid #28a745;"
+						class="rounded-0 btn btn-success col-2 " type="submit">Tìm
+						kiếm</button>
+				</form>
+				<div class="col-md-2 m-4">
+					<div class="sidebar-box ftco-animate">
+						<div class="list-group">
+							<h4 class="text-center border-bottom font-weight-bold text-success">LOẠI SÂN</h4>
+							<a th:each="c : ${sporttype}" style="font-size: 18px;"
+								th:href="@{/field(typeId=${c.id})}"
+								th:class="${c.id == param.typeId} ? 'list-group-item list-group-item-action active bg-success text-white' : 'list-group-item list-group-item-action'">
+								[[${c.categoryName}]] </a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9">
+
+					<div class="row mb-4">
+
+						<p style="font-size: 20px; margin-right: 2px;"
+							class="font-weight-bold" th:text="${thongbao}"></p>
+						<p style="font-size: 18px; margin: 2px;"
+							class="font-weight-bold text-success" th:text="${namesporttype}"></p>
+						<p style="font-size: 18px; margin: 2px;"
+							class="font-weight-bold text-info" th:text="${nameshift}"></p>
+						<p style="font-size: 18px; margin: 2px;"
+							class="font-weight-bold text-danger" th:text="${formattedDate}"></p>
+
+					</div>
+
+
+					<div class="row d-flex">
+						<div class="col-lg-12 d-flex align-items-stretch ftco-animate"
+							th:each="e : ${listField}">
+							<div class="blog-entry d-flex">
+								<img class="block-20 img"
+									th:src="${e.image}" alt="Image">
+								<div class="text p-4 bg-light d-flex flex-column">
+									<h3 class="heading mb-0">
+										<a th:href="@{/field-detail(id=${e.id})}" th:text="${e.nameField}"></a>
+									</h3>
+									<div>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+											fill="currentColor" class="bi bi-geo-alt-fill"
+											viewBox="0 0 16 16">
+            							<path
+												d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+         								 </svg>
+										<b class="" th:text="${e.address}"></b>
+									</div>
+									<p>
+										<span class="text-success font-weight-bold"> Giá tiền /
+											1 giờ: </span> <span class="text-danger font-weight-bold"
+											th:text="${#numbers.formatCurrency(e.price)}"></span>
+									</p>
+
+									<div class="submit-section align-self-end mt-auto">
+										<a th:href="@{/field-detail(id=${e.id})}">
+											<button class="btn btn-success">Chọn sân này</button>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+<div th:replace="fragment/footeruser :: footerUser"></div>
+
+
+	<script src="/user/js/jquery.min.js"></script>
+	<script src="/user/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/user/js/popper.min.js"></script>
+	<script src="/user/js/bootstrap.min.js"></script>
+	<script src="/user/js/jquery.easing.1.3.js"></script>
+	<script src="/user/js/jquery.waypoints.min.js"></script>
+	<script src="/user/js/jquery.stellar.min.js"></script>
+	<script src="/user/js/owl.carousel.min.js"></script>
+	<script src="/user/js/jquery.magnific-popup.min.js"></script>
+	<script src="/user/js/jquery.animateNumber.min.js"></script>
+	<script src="/user/js/scrollax.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="/user/js/google-map.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script src="/user/js/main.js"></script>
+	<script src="/user/jscode/favoriteHeart.js"></script>
+	<script>
+		var dateInput = document.getElementById("dateInput");
+
+		dateInput.oninvalid = function(event) {
+			event.target
+					.setCustomValidity("Vui lòng chọn một ngày");
+		};
+
+		dateInput.oninput = function(event) {
+			event.target.setCustomValidity("");
+		};
+	
+		 function setMinMaxDates() {
+	            var today = new Date();
+	            var dd = String(today.getDate()).padStart(2, '0');
+	            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+	            var yyyy = today.getFullYear();
+
+	            var minDate = yyyy + '-' + mm + '-' + dd;
+	            document.getElementById('dateInput').min = minDate;
+
+	            var maxDate = (yyyy) + '-12-31'; // Cập nhật 'max' là ngày cuối cùng trong năm
+	            document.getElementById('dateInput').max = maxDate;
+	        }
+		 
+		 function parsePrice(priceString) {
+			  // Loại bỏ dấu chấm trong chuỗi giá tiền
+			  var priceWithoutDot = priceString.replace(/\./g, '');
+			  // Định dạng chuỗi giá tiền thành số
+			  return parseInt(priceWithoutDot);
+			}
+		 function quickSort(arr, order) {
+			  if (arr.length <= 1) return arr;
+
+			  const pivot = arr[0];
+			  const left = [];
+			  const right = [];
+
+			  for (let i = 1; i < arr.length; i++) {
+			    const price = parsePrice(arr[i].querySelector(".text-danger.font-weight-bold").textContent);
+			    if (order === 'asc') {
+			      price <= parsePrice(pivot.querySelector(".text-danger.font-weight-bold").textContent) ? left.push(arr[i]) : right.push(arr[i]);
+			    } else if (order === 'desc') {
+			      price >= parsePrice(pivot.querySelector(".text-danger.font-weight-bold").textContent) ? left.push(arr[i]) : right.push(arr[i]);
+			    }
+			  }
+
+			  return [...quickSort(left, order), pivot, ...quickSort(right, order)];
+			}
+		
+		 function sortByPrice(order) {
+			  var container = document.querySelector(".row.d-flex");
+			  var fields = container.querySelectorAll(".col-lg-12.d-flex.align-items-stretch.ftco-animate");
+			  var container11 = document.querySelector(".col-9");
+			  var sortedFields = quickSort(Array.from(fields), order);
+			  container.innerHTML = "";
+
+			  sortedFields.forEach(field => {
+			    container.appendChild(field);
+			  });
+
+			  // Tự động cuộn tới vị trí mới của danh sách sau khi sắp xếp
+			  container11.scrollIntoView({ behavior: "smooth" });
+			  console.log(order);
+			}
+		 function handleDefault() {
+			 var container11 = document.querySelector(".col-9");
+			 container11.scrollIntoView({ behavior: "smooth" });
+	 }
+
+	</script>
+
+</body>
+
+</html>

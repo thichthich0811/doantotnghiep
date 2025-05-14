@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="row">
+                <div class="col-sm-12 header-sp">
+                    <form class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <a href="addproduct" class="btn btn-primary form-control"><i class="fa fa-plus"></i> Thêm sản phẩm</a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <select name="category" id="listcategory" class="form-control" style="width: 100%;">
+                                <option value="-1">--- Tất cả ---</option>
+                                <option
+                                        th:each="c : ${listCategory}"
+                                        th:text="${c.categoryName}"
+                                        th:selected="${category == c.id}"
+                                        th:value="${c.id}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <button class="btn btn-primary"><i class="fa fa-filter"></i> Lọc</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wrapper">
+                        <table id="example" class="table table-striped tablefix">
+                            <thead class="thead-tablefix">
+                            <tr>
+                                <th>STT</th>
+                                <th>Ảnh</th>
+                                <th>Mã</th>
+                                <th>Danh mục</th>
+                                <th>Tên</th>
+                                <th>Giá</th>
+                                <th>Ngày tạo</th>
+                                <th>Số lượng còn</th>
+                                <th>Trạng thái</th>
+                                <th class="sticky-col">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody id="listproduct">
+                            <tr th:each="c, iterStat : ${listProduct}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td><img th:src="${c.image}" th:class="imgtable"></td>
+                                <td th:text="${c.id}"></td>
+                                <td th:text="${c.categories != null} ? ${c.categories.categoryName} : ''"></td>
+                                <td th:text="${c.productName}"></td>
+                                <td>[[${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+                                <td th:text="${c.dateCreate}"></td>
+                                <td th:text="${c.quantity}"></td>
+                                <td th:text="${c.productStatus != true} ? 'Ngưng bán' : 'Đang bán'" th:class="${c.productStatus != true} ? 'spngungban' : ''"></td>
+                                <td class="sticky-col">
+                                    <a class="delete-btn" th:href="@{delete-sanpham(id=${c.id})}" onclick="return confirm('Xác nhận xóa?');"><i class="fa fa-trash-alt" ></i></a>
+                                    <a class="edit-btn" th:href="@{addproduct(id=${c.id})}"><i class="fa fa-edit" ></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+
+<script>
+    $('#example').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+        }
+    });
+</script>
+<script>
+    function checkPass(){
+        var pass = document.getElementById("pass").value;
+        var repass = document.getElementById("repass").value;
+        if(pass != repass){
+            toastr.error("Mật khẩu không khớp");
+            return false;
+        }
+        return true
+    }
+</script>
+</html>

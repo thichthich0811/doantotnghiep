@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="col-sm-12">
+                <div class="title-add-admin">
+                    <p>Thêm/ cập nhật sản phẩm</p>
+                </div>
+                <form method="post" th:action="@{/admin/addevent}" onsubmit="return beforeSubmit()" th:object="${event}" class="col-sm-12" enctype="multipart/form-data">
+                    <div class="form-add">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-12">
+                                <input th:field="*{id}" type="hidden" class="form-control">
+                                <label class="lb-form">Tên sự kiện</label>
+                                <input th:field="*{nameEvent}" type="text" class="form-control">
+                                <label class="lb-form">Ngày bắt đầu</label>
+                                <input th:field="*{dateStart}" type="date" class="form-control">
+                                <label class="lb-form">Ngày kết thúc</label>
+                                <input th:field="*{dateEnd}" type="date" class="form-control">
+                                <label class="lb-form">Loại sự kiện</label>
+                                <input th:field="*{eventType}" type="text" class="form-control">
+                                <br>
+                                <div class="loading" id="loading">
+                                    <div class="bar1 bar"></div>
+                                </div><br>
+                                <button class="btn btn-primary form-control">Thêm/ cập nhật</button>
+                            </div>
+                            <div class="col-md-8 col-sm-12 col-12">
+                                <div th:class="row">
+                                    <div th:class="col-sm-6">
+                                        <label class="lb-form">Ảnh nền</label>
+                                        <input id="imgbanner" name="imgbanner" type="file" class="form-control">
+                                    </div>
+                                    <div th:class="col-sm-6">
+                                        <img th:src="${event.image}" class="imgtable" id="imgpreview">
+                                    </div>
+                                </div>
+                                <label class="lb-form">Mô tả sự kiện</label>
+                                <textarea id="editor" th:field="*{descriptions}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script src="https://cdn.tiny.cloud/1/f6s0gxhkpepxkws8jawvfwtj0l9lv0xjgq1swbv4lgcy3au3/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea#editor',
+    });
+    function beforeSubmit() {
+        const dateStartInput = document.getElementById("dateStart");
+        const dateEndInput = document.getElementById("dateEnd");
+
+        const startDate = new Date(dateStartInput.value);
+        const endDate = new Date(dateEndInput.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // loại bỏ giờ để so sánh đúng
+
+        if (isNaN(startDate)) {
+            toastr.error("Vui lòng chọn ngày bắt đầu.");
+            dateStartInput.focus();
+            return false;
+        }
+        var uls = new URL(document.URL)
+        var id = uls.searchParams.get("id");
+        if (startDate < today && id == null) {
+            toastr.error("Ngày bắt đầu phải từ hôm nay trở đi.");
+            dateStartInput.focus();
+            return false;
+        }
+
+        if (dateEndInput.value !== "" && startDate > endDate) {
+            toastr.error("Ngày bắt đầu không được sau ngày kết thúc.");
+            dateStartInput.focus();
+            return false;
+        }
+        document.getElementById("loading").style.display = 'block'
+        return true;
+    }
+    imgbanner.onchange = evt => {
+        const [file] = imgbanner.files
+        if (file) {
+            imgpreview.src = URL.createObjectURL(file)
+        }
+    }
+</script>
+</html>

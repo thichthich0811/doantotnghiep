@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="row">
+                <div class="col-sm-12 header-sp">
+                    <form class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <a href="addvoucher" class="btn btn-primary form-control"><i class="fa fa-plus"></i> Thêm voucher</a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <select name="loai" class="form-control">
+                                <option value="-1" th:selected="${param.loai != null && param.loai[0] == '-1'}">Tất cả</option>
+                                <option value="con-han" th:selected="${param.loai != null && param.loai[0] == 'con-han'}">Đang hoạt động</option>
+                                <option value="het-han" th:selected="${param.loai != null && param.loai[0] == 'het-han'}">Hết hạn</option>
+                                <option value="chua-ap-dung" th:selected="${param.loai != null && param.loai[0] == 'chua-ap-dung'}">Chưa đến hạn sử dụng</option>
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <button class="btn btn-primary d-block"><i class="fa fa-filter"></i> Lọc</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wrapper">
+                        <table id="example" class="table table-striped tablefix">
+                            <thead class="thead-tablefix">
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã giảm giá</th>
+                                <th>Chiết khấu</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th class="sticky-col">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody id="listproduct">
+                            <tr th:each="c, iterStat : ${listvoucher}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${c.code}"></td>
+                                <td th:text="${c.discountPercent}+'%'"></td>
+                                <td th:text="${c.startDate}"></td>
+                                <td th:text="${c.endDate}"></td>
+                                <td class="sticky-col">
+                                    <a class="delete-btn" th:href="@{delete-voucher(id=${c.id})}" onclick="return confirm('Xác nhận xóa?');"><i class="fa fa-trash-alt" ></i></a>
+                                    <a class="edit-btn" th:href="@{addvoucher(id=${c.id})}"><i class="fa fa-edit" ></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+
+<script>
+    $('#example').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+        }
+    });
+</script>
+<script>
+    function checkPass(){
+        var pass = document.getElementById("pass").value;
+        var repass = document.getElementById("repass").value;
+        if(pass != repass){
+            toastr.error("Mật khẩu không khớp");
+            return false;
+        }
+        return true
+    }
+</script>
+</html>

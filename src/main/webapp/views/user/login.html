@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Đăng Nhập</title>
+<link rel="icon" href="/user/images/logotitle.png" type="image/x-icon">
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS v5.2.1 -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="/user/css/styleLogin.css">
+</head>
+
+<body>
+	<div class="contentlogin loginpage">
+		<div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
+			<p class="titellogin">Chào mừng bạn đến với VT SPORT!</p>
+			<p class="plogintl"><span class="dangtl">ĐĂNG </span><span class="kytl">NHẬP</span></p>
+			<form method="post" class="inputloginform">
+				<input name="username" id="username" placeholder="Email" class="inputform">
+				<input name="password" required id="password" placeholder="Mật khẩu" class="inputform" type="password">
+				<div th:if="${param.error}" class="errorlogin">
+					Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.
+				</div>
+				<button type="submit" class="btndn">Đăng Nhập</button>
+				<p class="linkquenmk"><a href="forgot" class="aquenmk">Quên mật khẩu</a></p>
+				<p class="quenmk"><a href="index">
+					← Quay lại trang chủ – VT SPORT
+				</a></p>
+				<p class="nothvaccount"><span>Bạn chưa có tài khoản? </span><a href="regis" class="aquenmk">Đăng ký ngay</a></p>
+			</form>
+		</div>
+		</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<th:block id="menu" th:fragment="headerUser">
+    <div class="wrap" style="z-index: 9; position: relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <p class="mb-0 phone pl-md-2">
+<!--                        <a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span>-->
+<!--                            +00 1234 567</a> <a href="#"><span class="fa fa-paper-plane mr-1"></span>-->
+<!--                        youremail@email.com</a>-->
+                    <a href="/" style="font-family: 'Arial Black', sans-serif; color: #000000; letter-spacing: 4px; text-shadow: 2px 2px 5px gray; text-align: center;">
+                        VT SPORT
+                    </a>
+
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-md-end">
+                    <!-- check login -->
+                    <!-- Thẻ div để hiển thị khi chưa đăng nhập -->
+                    <div th:if="${users == null}" class="reg m-1"
+                         style="display: block;">
+                        <p class="mb-0" sec:authorize="isAnonymous()">
+                            <a href="/login" class="mr-2"
+                               style="color: white;">Đăng nhập |</a>
+                            <a href="/regis " style="color: white;">Đăng ký</a>
+                        </p>
+                        <p class="mb-0" sec:authorize="isAuthenticated()">
+                            <a href="/taikhoan" class="mr-2"
+                               style="color: white;" th:text="'Xin chào: '+${userlogged.fullName}+' !'">Tài khoản |</a>
+                            <a href="/logout" style="color: white;">Đăng xuất</a>
+                        </p>
+                    </div>
+
+                    <!-- Thẻ div để hiển thị khi đã đăng nhập -->
+                    <span th:if="${users != null}" class="m-1 mr-2"
+                          style="color: white;">Xin chào !</span>
+                    <div th:if="${users != null}" class="dropdown m-1"
+                         style="display: block;">
+                        <a class="dropdown-toggle " id="dropdownMenuAccount"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img th:if=${users.image!=null}
+                                 class="rounded-circle border border-white"
+                                 th:src="@{'/user/images/' + ${users.image}}" alt=""
+                                 style="width: 30px; height: 30px;"> <img
+                                th:if=${users.image==null}
+                                class="rounded-circle border border-white"
+                                src="/user/images/noavatar.jpg" alt=""
+                                style="width: 30px; height: 30px;"> <span id="nameuser"
+                                                                          th:text="${users.firstname} + ' ' + ${users.lastname}"></span>
+                        </a>
+                        <div class="ml-3 mt-2 dropdown-menu"
+                             aria-labelledby="dropdownMenuButton">
+                            <a th:href="@{/sportify/profile}" class="dropdown-item">Thông
+                                tin</a> <a th:href="@{/sportify/field/profile/historybooking}"
+                                           class="dropdown-item" href="#">Lịch sử đặt sân</a><a th:href="@{/sportify/order/historyList}"
+                                                                                                class="dropdown-item" href="#">Lịch sử đặt hàng</a> <a
+                                th:if="${authorized.roleid== 'R01' or authorized.roleid== 'R02'}"
+                                th:href="@{/sportify/admin}" class="dropdown-item">Quản trị</a>
+                            <a th:href="@{/sportify/logoff}" class="dropdown-item">Đăng xuất</a>
+                        </div>
+                    </div>
+
+                    <!-- end check login -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <nav
+            class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+            id="ftco-navbar">
+        <div class="container">
+<!--            <a class="navbar-brand" th:href="@{/}"><img-->
+<!--                    src="/user/images/Logo3.png" style="width: 120px;" alt=""></a>-->
+            <div sec:authorize="isAuthenticated()" class="order-lg-last btn-group">
+                <a href="/cart" class="btn-cart">
+                    <span class="flaticon-shopping-bag"></span>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <small th:text="${soLuongGhGlobal}"></small>
+                    </div>
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#ftco-nav" aria-controls="ftco-nav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a th:href="@{/field}"
+                                            class="nav-link">Sân</a></li>
+                    <li class="nav-item"><a th:href="@{/team}"
+                                            class="nav-link">Đội</a></li>
+                    <li class="nav-item"><a th:href="@{/event}"
+                                            class="nav-link">Tin Tức</a></li>
+                    <li class="nav-item"><a th:href="@{/product}"
+                                            class="nav-link">Cửa hàng</a></li>
+                    <li class="nav-item"><a th:href="@{/about}"
+                                            class="nav-link">Về chúng tôi</a></li>
+                    <li class="nav-item"><a th:href="@{/contact}"
+                                            class="nav-link">Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+
+</body>
+</html>

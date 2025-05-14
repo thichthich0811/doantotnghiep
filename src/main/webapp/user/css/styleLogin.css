@@ -1,0 +1,188 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+.bg-image {
+	background-image:
+		url('https://bootstrapious.com/i/snippets/sn-page-split/bg.jpg');
+	background-size: cover;
+	background-position: center center;
+}
+.loginpage{
+	height: 100vh;
+	background-image: url('/user/images/backlogin.jpg');
+	background-repeat: no-repeat;
+	background-size: 100%;
+}
+.rightlogin{
+	background-color: rgba(0,0,0,0.7);
+	color: #fff;
+}
+.login{
+	height: 60vh;
+	margin-top: 20vh;
+	margin-right: 50px;
+	border-radius: 10px;
+}
+
+.contentlogin {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+.loginform {
+	padding-bottom: 15px;
+	padding-top: 10px;
+}
+
+.titellogin {
+	color: #595959;
+	font-size: 16px;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 2rem;
+}
+
+.dangtl {
+	color: #151560 !important;
+	font-weight: 700;
+	font-family: 'SVN-Gilroy Bold';
+	font-size: 26px;
+}
+
+.kytl {
+	color: #fcaf17 !important;
+	font-weight: 700;
+	font-family: 'SVN-Gilroy Bold';
+	font-size: 26px;
+}
+
+.loginform {
+	display: block;
+	margin-top: 15px;
+	margin: auto;
+	background-color: #fff;
+	margin-bottom: 100px;
+}
+.plogintl {
+	text-align: center;
+}
+.inputloginform {
+	padding-left: 20%;
+	padding-right: 20%;
+}
+.inputform {
+	height: 48px;
+	line-height: 48px;
+	margin-bottom: 10px;
+	padding: 0 18px;
+	margin-bottom: 24px;
+	border-radius: 5px;
+	width: 100%;
+	border: 1px solid #e0e0d1;
+}
+.btndn {
+	display: inline-block;
+	width: calc(50% - 5px);
+	height: 48px;
+	line-height: 48px;
+	background: #fcaf17;
+	color: #fff;
+	text-align: center;
+	padding: 0;
+	border: none;
+	outline: none;
+	font-weight: bold;
+	border-radius: 4px;
+	font-size: 18px;
+	font-family: 'SVN-Gilroy Bold';
+	margin-bottom: 10px;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.linkquenmk {
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+}
+.aquenmk {
+	color: #FCAF17;
+	text-decoration: none;
+}
+.nothvaccount {
+	text-align: center;
+	margin-top: 50px;
+}
+
+.btnhuylogin {
+	width: 49%;
+	border: none;
+	font-family: 'SVN-Gilroy Bold';
+	line-height: 48px;
+	background: #FEEEEA;
+	color: #fcaf17;
+	text-align: center;
+	padding: 0;
+	border: none;
+	outline: none;
+	text-transform: uppercase;
+	font-weight: bold;
+	border-radius: 4px;
+	font-size: 18px;
+}
+
+.btnhuylogin:hover {
+	background: #fcaf17;
+	color: #fff;
+}
+
+.btntt {
+	width: 49%;
+	float: right;
+	font-family: 'SVN-Gilroy Bold';
+	line-height: 48px;
+	background: #fcaf17;
+	color: #fff;
+	text-align: center;
+	padding: 0;
+	border: none;
+	outline: none;
+	text-transform: uppercase;
+	font-weight: bold;
+	border-radius: 4px;
+	font-size: 18px;
+}
+.noteregis {
+	text-align: center;
+	width: 385px;
+	margin: 0 auto 10px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	max-width: 100%;
+	font-size: 0.9rem;
+}
+
+.quenmk{
+	text-align: center;
+	margin-top: 20px;
+	color: #a8a7a7;
+	text-decoration: none;
+	font-size: 13px;
+}
+.quenmk a{
+	color: #8c8b8b;
+	text-decoration: none;
+}
+.errorlogin{
+	background: #8a8484;
+	color: #fff;
+	padding: 3px 10px;
+	margin-bottom: 10px;
+}
+.error{
+	color: red;
+}

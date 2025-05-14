@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+  <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+  <div class="inner-wrapper">
+    <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+    <section role="main" class="content-body" id="main-content">
+      <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+      <div class="row">
+        <div class="col-sm-12 header-sp">
+          <form class="row filterdonhang">
+            <div class="col-md-2">
+              <label>Từ ngày</label>
+              <input th:value="${param.fromDate != null ? param.fromDate:''}" name="fromDate" type="date" class="form-control">
+            </div>
+            <div class="col-md-2">
+              <label>Đến ngày</label>
+              <input th:value="${param.toDate != null? param.toDate:''}" name="toDate" type="date" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label>Loại thanh toán</label>
+              <select name="trangThaiThanhToan" class="form-control">
+                <option value="">--- Tất cả ---</option>
+                <option value="Đã Cọc" th:selected="${param.trangThaiThanhToan != null && param.trangThaiThanhToan[0] == 'Đã Cọc'?true:false}">Đã Cọc</option>
+                <option value="Đã Thanh Toán" th:selected="${param.trangThaiThanhToan != null && param.trangThaiThanhToan[0] == 'Đã Thanh Toán'?true:false}">Đã Thanh Toán</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label>&ThinSpace;</label>
+              <button class="btn btn-danger form-control"><i class="fa fa-filter"></i> Lọc</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-12">
+          <div class="wrapper">
+            <table id="example" class="table table-cart table-order">
+              <thead class="thead-default">
+              <tr>
+                <th>Mã</th>
+                <th class="floatr">Ngày đặt</th>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th class="floatr">Tổng tiền</th>
+                <th>Thanh toán</th>
+                <th>Sân</th>
+                <th>Giờ đá</th>
+                <th>Ghi chú</th>
+                <th>Hành động</th>
+              </tr>
+              </thead>
+              <tbody id="listinvoice">
+              <tr th:each="d : ${listBooking}">
+                <td><a data-bs-toggle="modal" th:data-bs-target="'#modaldeail'+${d.id}" class="yls pointer-event" th:text="${d.id}"></a></td>
+                <td class="floatr" th:text="${d.bookingDate}"></td>
+                <td th:text="${d.fullName}"></td>
+                <td th:text="${d.phone}"></td>
+                <td class="floatr"><span class="yls">[[${#numbers.formatDecimal(d.bookingPrice, 0, 'COMMA', 0, 'POINT')}]].đ</span></td>
+                <td><span class="span_pending" th:text="${d.bookingStatus}"></span></td>
+                <td><span class="span_pending" th:text="${d.bookingdetails[0].field.nameField}"></span></td>
+                <td><span class="span_pending" th:text="${d.bookingdetails[0].shifts.nameShift}"></span></td>
+                <td><span class="span_pending" th:text="${d.note}"></span></td>
+                <td>
+                  <form onsubmit="return confirm('Xác nhận đã thanh toán')" method="post" action="/admin/xac-nhan-thanh-toan-booking" th:if="${d.bookingStatus == 'Đã Cọc'}">
+                    <input type="hidden" th:value="${d.id}" name="id">
+                    <button class="btn btn-primary">Đã thanh toán</button>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal fade" id="capnhatdonhang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cập nhật trạng thái đơn hàng</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body">
+          <form method="post" action="update-status-invoice">
+            <input name="invoiceId" type="hidden" id="iddonhangupdate">
+            <select name="trangthaivanchuyen" class="form-control" id="trangthaiupdate">
+              <option value="Đang chờ xác nhận">Đang chờ xác nhận</option>
+              <option value="Đã xác nhận đơn hàng">Đã xác nhận đơn hàng</option>
+              <option value="Đang giao">Đang giao</option>
+              <option value="Đã nhận hàng">Đã nhận hàng</option>
+              <option value="Đã hủy">Đã hủy</option>
+            </select><br><br>
+            <button class="btn btn-primary form-control action-btn">Cập nhật</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script>
+  function openEditModal(id, idstatus) {
+    document.getElementById('iddonhangupdate').value = id;
+    document.getElementById('trangthaiupdate').value = idstatus;
+  }
+</script>
+<script>
+  $('#example').DataTable({
+    language: {
+      url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+    }
+  });
+</script>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>VT SPORT - Liên Hệ</title>
+	<th:block th:replace="fragment/libuser :: libheader"></th:block>
+
+</head>
+<body>
+<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+
+<section class="hero-wrap hero-wrap-2"
+		 style="background-image: url('/user/images/about.jpg');"
+		 data-stellar-background-ratio="0.5">
+	<div class="overlay"></div>
+	<div class="container">
+		<div
+				class="row no-gutters slider-text align-items-end justify-content-center">
+			<div class="col-md-9 ftco-animate mb-5 text-center">
+				<p class="breadcrumbs mb-0">
+						<span class="mr-2"><a href="index.html">Trang Chủ <i
+								class="fa fa-chevron-right"></i></a></span> <span>Chính sách<i
+						class="fa fa-chevron-right"></i></span>
+				</p>
+				<h2 class="mb-0 bread">Chính sách</h2>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="ftco-section ftco-no-pb">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 img img-3  justify-content-center align-items-center" style="background-image: url(/user/images/Logo3.png);">
+			</div>
+			<div class="col-md-12 wrap-about pl-md-5 ftco-animate py-5">
+				<div class="heading-section">
+
+					<h2 class="mb-4">VT SPORT - Nền tảng đa năng cho đặt sân, tạo đội và mua sắm sản phẩm thể thao</h2>
+
+					<h4 style="color:green; font-weight: bold;">1. Chính sách đặt sân</h4>
+					<p>(a) Khi bạn sử dụng dịch vụ ở <b class="font-weight-bold">VT SPORT</b> sẽ được hưởng quyền lợi:<br>
+						+ Hoàn tiền cọc Đặt sân 100% giá trị đã thanh toán thành công nếu hệ thống bị lỗi do đội ngũ phát triển website. <br>
+						+ Bồi thường 200% giá trị cọc đã thành toán thành công nếu hệ thống ghi nhận có lịch trùng ca với người khác trên cùng 1 tên sân.</p>
+					<p>(b) Nếu bạn hủy Đơn đặt hoặc vắng mặt, mọi khoản phí cọc đã thanh toán thành công bên chúng tôi sẽ <b class="font-weight-bold">Không được hỗ trợ hoàn lại.</b> </p>
+					<p>(c) Nếu bạn nghĩ rằng bạn sẽ không thể đến đúng hẹn, vui lòng liên hệ cho chúng tôi biết thời gian đến dự kiến, để chúng tôi không hủy Đơn đặt của bạn. Nếu bạn đến muộn, chúng tôi <b class="font-weight-bold">không</b> chịu trách nhiệm về hậu quả (ví dụ: Đơn đặt bị hủy, hoặc bất kỳ khoản phí nào chúng tôi có thể thu).</p>
+					<h4 style="color:green; font-weight: bold;">2. Chính sách đặt hàng tại SHOP-VT SPORT:</h4>
+					<p>(a) Khi bạn mua sắm ở <b class="font-weight-bold">SHOP-VT SPORT</b> sẽ được hưởng quyền lợi:<br>
+						+ Hoàn tiền Đơn hàng & Phí ship 100% giá trị đã thanh toán thành công nếu hệ thống bị lỗi do đội ngũ phát triển website. <br>
+						+ Hoàn tiền Đơn hàng <b class="font-weight-bold">Không hoàn phí ship</b> 100% giá trị trên từng sản phẩm đã thanh toán thành công nếu quý khách từ chối nhận hàng hoặc không nghe máy khi shipper liên hệ 3 lần <br>
+						+ Hoàn tiền Đơn hàng & Phí ship 100% giá trị trên từng sản phẩm đã thanh toán thành công nếu hết hàng hoặc hàng không đủ chất lượng để cung cấp đến tay Quý khách. <br>
+						+ Bồi thường 200% giá trị sản phẩm nếu khách hàng nhận sản phẩm kém chất lượng không giống như mô tả <b class="font-weight-bold">( phải có video bóc kiểm hàng và gửi lại shop đúng sản phẩm còn tem )</b> tại website <b class="font-weight-bold">VTSPORT.com</b> </p>
+					<p>(b) Chúng tôi sẽ <b class="font-weight-bold">Không hoàn tiền</b> đã thanh toán thành công khi hàng bị lỗi hoặc không như mong muốn đã <b class="font-weight-bold">bị mất tem hoặc không có video bóc hàng chứng minh.</b></p>
+					<p>(c) Chúng tôi sẽ <b class="font-weight-bold">Không hoàn tiền Phí ship</b> đã thanh toán thành công khi hàng được shipper liên hệ giao cho quý khách không nghe máy hoặc lý do khác.</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+<div th:replace="fragment/footeruser :: footerUser"></div>
+
+<script>
+
+	document.addEventListener('DOMContentLoaded', function() {
+	    var titleInput = document.getElementById('title');
+	    var errorMessage = document.querySelector('.error-message');
+	    var titleInput2 = document.getElementById('meesagecontact');
+	    var errorMessage2 = document.querySelector('.error-message2');
+
+
+	    titleInput.addEventListener('focus', function() {
+	        errorMessage.style.display = 'none';
+
+	    });
+	    titleInput2.addEventListener('focus', function() {
+
+	        errorMessage2.style.display = 'none';// Ẩn thông báo lỗi khi người dùng chọn vào input
+	    });
+	});
+
+</script>
+<script src="/user/js/jquery.min.js"></script>
+<script src="/user/js/jquery-migrate-3.0.1.min.js"></script>
+<script src="/user/js/popper.min.js"></script>
+<script src="/user/js/bootstrap.min.js"></script>
+<script src="/user/js/jquery.easing.1.3.js"></script>
+<script src="/user/js/jquery.waypoints.min.js"></script>
+<script src="/user/js/jquery.stellar.min.js"></script>
+<script src="/user/js/owl.carousel.min.js"></script>
+<script src="/user/js/jquery.magnific-popup.min.js"></script>
+<script src="/user/js/jquery.animateNumber.min.js"></script>
+<script src="/user/js/scrollax.min.js"></script>
+<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="/user/js/google-map.js"></script>
+<script src="/user/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="col-sm-12">
+                    <div class="title-add-admin">
+                        <p>Thêm/ cập nhật sản phẩm</p>
+                    </div>
+                    <form method="post" th:action="@{/admin/add-san-pham}" onsubmit="return beforeSubmit()" th:object="${product}" class="col-sm-12" enctype="multipart/form-data">
+                        <div class="form-add">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 col-12">
+                                    <input th:field="*{id}" type="hidden" class="form-control">
+                                    <label class="lb-form">Tên sản phẩm</label>
+                                    <input th:field="*{productName}" type="text" class="form-control">
+                                    <label class="lb-form">Giá tiền</label>
+                                    <input th:field="*{price}" type="text" class="form-control">
+                                    <label class="lb-form">Giảm giá</label>
+                                    <input th:field="*{discountPrice}" type="text" class="form-control">
+                                    <label class="lb-form">Số lượng</label>
+                                    <input th:field="*{quantity}" type="text" class="form-control">
+                                    <label class="lb-form">Danh mục sản phẩm</label>
+                                    <select id="danhMuc" th:field="*{categories}" class="form-control">
+                                        <option th:each="danhMuc : ${danhMucList}"
+                                                th:value="${danhMuc.id}"
+                                                th:text="${danhMuc.categoryName}"></option>
+                                    </select>
+                                    <label class="lb-form">Trạng thái</label>
+                                    <select id="trangThai" th:field="*{productStatus}" class="form-control">
+                                        <option value="1">Đang bán</option>
+                                        <option value="0">Ngưng bán</option>
+                                    </select>
+                                    <br>
+                                    <div class="loading" id="loading">
+                                        <div class="bar1 bar"></div>
+                                    </div><br>
+                                    <button class="btn btn-primary form-control">Thêm/ cập nhật</button>
+                                </div>
+                                <div class="col-md-8 col-sm-12 col-12">
+                                    <div th:class="row">
+                                        <div th:class="col-sm-6">
+                                            <label class="lb-form">Ảnh nền</label>
+                                            <input id="imgbanner" name="imgbanner" type="file" class="form-control">
+                                        </div>
+                                        <div th:class="col-sm-6">
+                                            <img th:src="${product.image}" class="imgtable" id="imgpreview">
+                                        </div>
+                                    </div>
+                                    <label class="lb-form">Mô tả sản phẩm</label>
+                                    <textarea id="editor" th:field="*{descriptions}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script src="https://cdn.tiny.cloud/1/f6s0gxhkpepxkws8jawvfwtj0l9lv0xjgq1swbv4lgcy3au3/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea#editor',
+    });
+    function beforeSubmit() {
+        document.getElementById("loading").style.display = 'block'
+        return true;
+    }
+    imgbanner.onchange = evt => {
+        const [file] = imgbanner.files
+        if (file) {
+            imgpreview.src = URL.createObjectURL(file)
+        }
+    }
+</script>
+</html>

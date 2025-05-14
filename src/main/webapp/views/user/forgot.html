@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Đăng Ký</title>
+  <link rel="icon" href="/user/images/logotitle.png" type="image/x-icon">
+  <link rel="stylesheet" href="/user/css/styleLogin.css">
+  <th:block th:replace="fragment/libuser :: libheader"></th:block>
+</head>
+
+<body>
+<div class="contentlogin loginpage">
+  <div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
+    <p class="plogintl"><span class="dangtl">QUÊN </span><span class="kytl">MẬT KHẨU</span></p>
+    <form class="inputloginform" method="post" action="/forgot">
+      <input name="email" placeholder="Nhập email" class="inputform">
+      <button type="button" class="btnhuylogin" onclick="window.location.href='login'">HỦY</button>
+      <button type="submit" class="btntt">TIẾP TỤC</button>
+      <p class="quenmk"><a href="index">
+        ← Quay lại trang chủ – VT SPORT
+      </a></p>
+    </form>
+  </div>
+</div>
+</body>
+<script th:inline="javascript">
+  var success = /*[[${success}]]*/ 'default';
+  if(success != null){
+    swal({
+      title: "Thông báo",
+      text: "Kiểm tra email của bạn!",
+      type: "success"
+    }, function() {
+      window.location.href = 'login'
+    });
+  }
+</script>
+<script th:inline="javascript">
+  var error = /*[[${error}]]*/ 'default';
+  if(error != null){
+    toastr.error(error);
+  }
+</script>
+</html>

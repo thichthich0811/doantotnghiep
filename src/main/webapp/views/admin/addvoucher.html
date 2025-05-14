@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="col-sm-12">
+                <div class="title-add-admin">
+                    <p>Thêm/ cập nhật voucher</p>
+                </div>
+                <form method="post" th:action="@{/admin/add-voucher}" onsubmit="return beforeSubmit()" th:object="${voucher}" class="col-sm-12" enctype="multipart/form-data">
+                    <div class="form-add">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 col-12">
+                                <input th:field="*{id}" type="hidden" class="form-control">
+                                <label class="lb-form">Mã khuyến mại</label>
+                                <input th:field="*{code}" type="text" class="form-control">
+                                <label class="lb-form">Ngày bắt đầu</label>
+                                <input th:field="*{startDate}" id="dateStart" type="date" class="form-control">
+                                <label class="lb-form">Ngày kết thúc</label>
+                                <input th:field="*{endDate}" id="dateEnd" type="date" class="form-control">
+                                <label class="lb-form">% giảm giá</label>
+                                <input th:field="*{discountPercent}" type="text" class="form-control">
+                                <br>
+                                <button class="btn btn-primary form-control">Thêm/ cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script>
+    function beforeSubmit() {
+        var uls = new URL(document.URL)
+        var id = uls.searchParams.get("id");
+        const dateStartInput = document.getElementById("dateStart");
+        const dateEndInput = document.getElementById("dateEnd");
+        const discountInput = document.getElementById("discountPercent");
+        const value = discountInput.value.trim();
+
+        const startDate = new Date(dateStartInput.value);
+        const endDate = new Date(dateEndInput.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // loại bỏ giờ để so sánh đúng
+
+        if (isNaN(startDate)) {
+            toastr.error("Vui lòng chọn ngày bắt đầu.");
+            dateStartInput.focus();
+            return false;
+        }
+
+        if (startDate < today && id == null) {
+            toastr.error("Ngày bắt đầu phải từ hôm nay trở đi.");
+            dateStartInput.focus();
+            return false;
+        }
+
+        if (dateEndInput.value !== "" && startDate > endDate) {
+            toastr.error("Ngày bắt đầu không được sau ngày kết thúc.");
+            dateStartInput.focus();
+            return false;
+        }
+
+        if (isNaN(value) || value === "") {
+            toastr.error("Vui lòng nhập số phần trăm giảm giá hợp lệ.");
+            discountInput.focus();
+            return false;
+        }
+
+        const number = parseFloat(value);
+
+        // Kiểm tra giá trị nằm trong khoảng (0, 100]
+        if (number <= 0 || number > 100) {
+            toastr.error("Giá trị giảm giá phải > 0 và ≤ 100.");
+            discountInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</html>

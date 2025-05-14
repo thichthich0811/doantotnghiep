@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Đăng Ký</title>
+    <link rel="icon" href="/user/images/logotitle.png" type="image/x-icon">
+    <link rel="stylesheet" href="/user/css/styleLogin.css">
+    <th:block th:replace="fragment/libuser :: libheader"></th:block>
+</head>
+
+<body>
+<div class="contentlogin loginpage">
+    <div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
+        <p class="plogintl"><span class="dangtl">XÁC NHẬN </span><span class="kytl"> TÀI KHOẢN</span></p>
+        <p class="noteregis">Chúng tôi đã gửi mã xác thực 6 số cho bạn, hãy nhập mã xác thực để kích hoạt tài khoản</p>
+        <form class="inputloginform" method="post" action="/confirm" th:object="${user}">
+            <input name="email" th:value="${param.email}" type="hidden">
+            <input name="key" placeholder="Nhập mã xác thực" class="inputform">
+            <button type="button" class="btnhuylogin" onclick="window.location.href='login'">HỦY</button>
+            <button type="submit" class="btntt">Xác thực</button>
+            <p class="quenmk"><a href="index">
+                ← Quay lại trang chủ – VT SPORT
+            </a></p>
+        </form>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    var error = /*[[${error}]]*/ 'default';
+    if(error != null){
+        toastr.error(error);
+    }
+</script>
+</html>

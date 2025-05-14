@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>VT SPORT - Giỏ Hàng</title><th:block th:replace="fragment/libuser :: libheader"></th:block>
+</head>
+<body ng-app="shopping-cart-app" ng-controller="shopping-cart-ctrl">
+	<!-- login bar -->
+	<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+	<!-- END nav -->
+	<!-- Background -->
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('/user/images/bg_product.png');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div
+				class="row no-gutters slider-text align-items-end justify-content-center">
+				<div class="col-md-9 ftco-animate mb-5 text-center">
+					<p class="breadcrumbs mb-0">
+						<span class="mr-2"><a href="index.html">Trang Chủ <i
+								class="fa fa-chevron-right"></i></a></span> <span>Cửa hàng <i
+							class="fa fa-chevron-right"></i></span>
+					</p>
+					<h2 class="mb-0 bread">Giỏ Hàng</h2>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8">
+					<table class="table" style="width: 100%">
+						<thead class="thead-primary">
+							<tr>
+								<th style="width: 30%">Sản phẩm</th>
+								<th style="width: 20%">Đơn giá</th>
+								<th style="width: 30%">Số lượng</th>
+								<th style="width: 20%">Tổng tiền</th>
+							</tr>
+						</thead>
+						<tbody>
+						<tr th:each="c : ${gioHangList}">
+							<td>
+								<a th:href="@{chitietsanpham(id=${c.products.id})}"><img class="imgprocart" th:src="${c.products.image}"></a>
+								<div class="divnamecart">
+									<a th:href="@{chitietsanpham(id=${c.products.id})}" class="nameprocart" th:text="${c.products.productName}"></a>
+								</div>
+							</td>
+							<td>[[${#numbers.formatDecimal(c.products.price, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+							<td>
+								<div class="clusinp">
+									<form action="/update-sl" method="post">
+										<input type="hidden" name="soLuong" th:value="-1">
+										<input type="hidden" name="id" th:value="${c.id}">
+										<button class="cartbtn"> - </button>
+									</form>
+									<input class="inputslcart" th:value="${c.quantity}">
+									<form action="/update-sl" method="post">
+										<input type="hidden" name="soLuong" th:value="1">
+										<input type="hidden" name="id" th:value="${c.id}">
+										<button class="cartbtn"> + </button>
+									</form>
+								</div>
+							</td>
+							<td>
+								<div class="tdpricecart">
+									<p class="boldcart">[[${#numbers.formatDecimal(c.products.price*c.quantity, 0, 'COMMA', 0, 'POINT')}]].đ</p>
+									<a th:href="@{delete-giohang(id=${c.id})}" onclick="return confirm('Xác nhận xóa khỏi giỏ hàng?');" class="delcart"><i class="fa fa-trash facartde"></i></a>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<form action="/checkout/order" method="post" class="col-sm-4" onsubmit="return confirm('Xác nhận đặt hàng?')">
+					<h3>Thanh toán giỏ hàng</h3>
+					<table class="table table-bordered">
+						<tr>
+							<td>Tạm tính: </td>
+							<td>[[${#numbers.formatDecimal(tongTien, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+						</tr>
+						<tr>
+							<td>Họ tên: </td>
+							<td><input name="fullName" class="form-control" th:value="${userlogged.fullName}"></td>
+						</tr>
+						<tr>
+							<td>Địa chỉ nhận: </td>
+							<td><input name="address" class="form-control" th:value="${userlogged.address}"></td>
+						</tr>
+						<tr>
+							<td>Số điện thoại: </td>
+							<td><input name="phone" class="form-control" th:value="${userlogged.phone}"></td>
+						</tr>
+						<tr>
+							<td colspan="2"><textarea class="form-control" name="note" placeholder="Ghi chú"></textarea></td>
+						</tr>
+						<tr>
+							<td>Khuyến mại: </td>
+							<td>
+								<select name="voucher" class="form-control" id="voucherSelect" onchange="tinhLaiTongTien()">
+									<option th:attr="data-discount=${0}" th:text="'Có '+${vouchers.size()} + ' khuyến mại'" value="-1"></option>
+									<option th:value="${c.code}" th:attr="data-discount=${c.discountPercent}" th:each="c : ${vouchers}" th:text="'Giảm giá '+${c.discountPercent}+'%' "></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Tổng tiền: </td>
+							<td id="tongTienTd"  th:data-original="${tongTien}">[[${#numbers.formatDecimal(tongTien, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+						</tr>
+						<tr>
+							<td colspan="2"><button class="btn btn-primary form-control">Xác nhận đặt hàng</button></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<div th:replace="fragment/footeruser :: footerUser"></div>
+	<script>
+		function tinhLaiTongTien() {
+			const select = document.getElementById("voucherSelect");
+			const selectedOption = select.options[select.selectedIndex];
+			const discount = parseFloat(selectedOption.getAttribute("data-discount"));
+
+			const td = document.getElementById("tongTienTd");
+			const original = parseFloat(td.getAttribute("data-original"));
+
+			if (!isNaN(discount)) {
+				const giamGia = original * (discount / 100);
+				const tongMoi = original - giamGia;
+				td.textContent = numberWithCommas(Math.round(tongMoi)) + ".đ";
+			}
+		}
+
+		function numberWithCommas(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+	</script>
+
+	<script th:inline="javascript">
+		var success = /*[[${success}]]*/ 'default';
+		if(success != null){
+			swal({
+				title: "Thông báo",
+				text: success,
+				type: "success"
+			}, function() {
+				window.location.href = '/'
+			});
+		}
+	</script>
+
+
+	<script src="/user/js/jquery.min.js"></script>
+	<script src="/user/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/user/js/popper.min.js"></script>
+	<script src="/user/js/bootstrap.min.js"></script>
+	<script src="/user/js/jquery.easing.1.3.js"></script>
+	<script src="/user/js/jquery.waypoints.min.js"></script>
+	<script src="/user/js/jquery.stellar.min.js"></script>
+	<script src="/user/js/owl.carousel.min.js"></script>
+	<script src="/user/js/jquery.magnific-popup.min.js"></script>
+	<script src="/user/js/jquery.animateNumber.min.js"></script>
+	<script src="/user/js/scrollax.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="/user/js/google-map.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script src="/user/js/main.js"></script>
+	<script src="/user/js/shopping-cart-app.js"></script>
+
+</body>
+</html>

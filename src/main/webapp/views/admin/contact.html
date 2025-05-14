@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="row">
+                <div class="col-sm-12 header-sp">
+                    <form class="row">
+                        <div class="col-md-3">
+                            <input class="form-control" name="from" type="date" th:value="${param.from==null?'':param.from[0]}">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control" name="to" type="date" th:value="${param.to==null?'':param.to[0]}">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary form-control">Lọc</button>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/admin/phanhoi" class="btn btn-primary form-control">Làm mới</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wrapper">
+                        <table id="example" class="table table-striped tablefix">
+                            <thead class="thead-tablefix">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Người liên hệ</th>
+                                    <th>Ngày yêu cầu</th>
+                                    <th>Loại liên hệ</th>
+                                    <th>Tiêu đề</th>
+                                    <th class="text-right no-sort">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listcate">
+                            <tr th:each="c, iterStat : ${contacts}">
+                                <td th:text="${iterStat.index + 1}"></td>
+                                <td th:text="${c.user == null?'':c.user.email}"></td>
+                                <td th:text="${c.datecontact}"></td>
+                                <td th:text="${c.category}"></td>
+                                <td th:text="${c.title}"></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<script>
+    $('#example').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+        }
+    });
+</script>
+</html>

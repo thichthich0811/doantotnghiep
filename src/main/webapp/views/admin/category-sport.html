@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+  <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+  <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+  <div class="inner-wrapper">
+    <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+    <section role="main" class="content-body" id="main-content">
+      <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+      <div class="row">
+        <div class="col-sm-12 header-sp">
+          <div class="row">
+            <div class="col-md-3">
+              <button data-bs-toggle="modal" data-bs-target="#themdanhmuc" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm danh mục</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="wrapper">
+            <table id="example" class="table table-striped tablefix">
+              <thead class="thead-tablefix">
+              <tr>
+                <th>STT</th>
+                <th>Tên danh mục</th>
+                <th class="sticky-col">Hành động</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody id="listcate">
+              <tr th:each="c, iterStat : ${listcate}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${c.categoryName}"></td>
+                <td>
+                  <a th:href="@{delete-danhmuc-thethao(id=${c.id})}" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');" class="delete-btn"><i class="fa fa-trash" ></i></a>
+                  <a data-bs-toggle="modal" th:data-bs-target="'#updatedanhmuc'+${c.id}" class="edit-btn"><i class="fa fa-edit"></i></a>
+                </td>
+                <td>
+                  <div class="modal fade" th:id="'updatedanhmuc'+${c.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header"><h5 class="modal-title">Cập nhật danh mục</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                        <div class="modal-body">
+                          <form method="post" action="update-danhmuc-thethao" class="col-sm-5" style="margin: auto;">
+                            <label>Tên danh mục</label>
+                            <input name="id" type="hidden" th:value="${c.id}"><br><br>
+                            <input name="name" th:value="${c.categoryName}" type="text" class="form-control"><br><br>
+                            <button class="btn btn-primary form-control action-btn">Thêm danh mục</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<div class="modal fade" id="themdanhmuc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Thêm danh mục</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <form method="post" action="add-danhmuc-thethao" class="col-sm-5" style="margin: auto;">
+          <label>Tên danh mục</label>
+          <input name="name" type="text" class="form-control"><br><br>
+          <button class="btn btn-primary form-control action-btn">Thêm danh mục</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#example').DataTable({
+    language: {
+      url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+    }
+  });
+</script>
+</html>

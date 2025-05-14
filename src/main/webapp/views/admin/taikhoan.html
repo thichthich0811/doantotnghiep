@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
+    <script src="js/menu.js"></script>
+</head>
+
+<body>
+<section class="body">
+    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+    <div class="inner-wrapper">
+        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+        <section role="main" class="content-body" id="main-content">
+            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+            <div class="row">
+                <div class="col-sm-12 header-sp">
+                    <form class="row">
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <select name="role" id="role" class="form-control">
+                                <option value="">Tất cả quyền</option>
+                                <option value="ROLE_USER" th:selected="${param.role != null and param.role[0] == 'ROLE_USER'}">Tài khoản người dùng</option>
+                                <option value="ROLE_ADMIN" th:selected="${param.role != null and param.role[0] == 'ROLE_ADMIN'}">Tài khoản admin</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-6">
+                            <button class="btn btn-primary form-control">Lọc</button>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-6">
+                            <button data-bs-toggle="modal" data-bs-target="#addtk" type="button" class="btn btn-primary form-control">Thêm tài khoản</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <div class="wrapper">
+                        <table id="example" class="table table-striped tablefix">
+                            <thead class="thead-tablefix">
+                            <tr>
+                                <th>id</th>
+                                <th>Email</th>
+                                <th>Họ tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Ngày tạo</th>
+                                <th>Quyền</th>
+                                <th class="sticky-col">Khóa</th>
+                            </tr>
+                            </thead>
+                            <tbody id="listuser">
+                            <tr th:each="u : ${taiKhoanList}">
+                                <td th:text="${u.id}"></td>
+                                <td th:text="${u.email}"></td>
+                                <td th:text="${u.fullName}"></td>
+                                <td th:text="${u.phone}"></td>
+                                <td th:text="${u.createdDate}"></td>
+                                <td th:text="${u.role}"></td>
+                                <td class="d-flex">
+                                    <form method="post" action="lockOrUnlockUser">
+                                        <input type="hidden" name="id" th:value="${u.id}">
+                                        <button th:class="${u.actived == true?'edit-btn':'delete-btn'}"
+                                                th:text="${u.actived == true?'Khóa':'Mở khóa'}"></button>
+                                    </form>
+                                    <a  th:href="@{/admin/delete-account(id=${u.id})}" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" class="delete-btn"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+</body>
+<div class="modal fade" id="addtk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm tài khoản quản trị</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            <div class="modal-body row">
+                <form method="post" action="/admin/add-account" class="row" onsubmit="return checkPass()">
+                    <div class="col-sm-6">
+                        <label class="lb-form">Họ tên</label>
+                        <input name="fullName" class="form-control">
+                        <label class="lb-form">Số điện thoại</label>
+                        <input name="phone" class="form-control">
+                        <label class="lb-form">Địa chỉ</label>
+                        <input name="address" class="form-control">
+                        <label class="lb-form">Email</label>
+                        <input required name="email" class="form-control">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="lb-form">Mật khẩu</label>
+                        <input required name="password" id="pass" type="password" class="form-control">
+                        <label class="lb-form">Nhắc lại mật khẩu</label>
+                        <input required id="repass" type="password" class="form-control">
+                        <label class="lb-form">Quyền</label>
+                        <select name="role" class="form-control">
+                            <option value="ROLE_ADMIN">Quản trị</option>
+                            <option value="ROLE_USER">Tài khoản người dùng</option>
+                        </select>
+                        <label class="lb-form">&ThinSpace;</label>
+                        <button class="form-control btn btn-primary">Thêm tài khoản</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-remove-format"></i> Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#example').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.2/i18n/vi.json'
+        }
+    });
+</script>
+<script>
+    function checkPass(){
+        var pass = document.getElementById("pass").value;
+        var repass = document.getElementById("repass").value;
+        if(pass != repass){
+            toastr.error("Mật khẩu không khớp");
+            return false;
+        }
+        return true
+    }
+</script>
+</html>

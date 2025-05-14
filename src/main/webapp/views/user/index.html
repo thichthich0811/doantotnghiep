@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="fragment/libuser :: libheader"></th:block>
+</head>
+<body>
+<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
+<div class="hero-wrap"
+	 style="background-image: url('/user/images/bgSum.jpg');"
+	 data-stellar-background-ratio="0.5">
+	<div class="overlay"></div>
+	<div class="container">
+		<div
+				class="row no-gutters slider-text align-items-center justify-content-center">
+			<div class="col-md-8 ftco-animate d-flex align-items-end">
+				<div class="text w-100 text-center">
+
+					<h1 class="mb-2" style="font-size: 100px">
+							<span>Good Sport <br> For Good Health
+							</span>
+					</h1>
+					<p>
+						<a th:href="@{/field}" class="btn btn-primary py-2 px-4">Đặt Sân Ngay</a> <a
+							th:href="@{/product}" class="btn btn-white btn-outline-white py-2 px-4">Đi Mua Sắm</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--<section class="ftco-intro">-->
+<!--	<div class="container">-->
+<!--		<div class="row no-gutters">-->
+<!--			<div class="col-md-4 d-flex">-->
+<!--				<div class="intro d-lg-flex w-100 ftco-animate">-->
+<!--					<div class="icon">-->
+<!--						<span class="flaticon-support"></span>-->
+<!--					</div>-->
+<!--					<div class="text">-->
+<!--						<h2>Hỗ trợ 24/7</h2>-->
+<!--						<br>-->
+<!--						<p>Bạn có thể yên tâm, chúng tôi luôn đồng hành cùng bạn,-->
+<!--							ngay cả vào cuối tuần và ngày lễ.</p>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="col-md-4 d-flex">-->
+<!--				<div class="intro color-1 d-lg-flex w-100 ftco-animate">-->
+<!--					<div class="icon">-->
+<!--						<span class="flaticon-cashback"></span>-->
+<!--					</div>-->
+<!--					<div class="text">-->
+<!--						<h2>Thanh toán với nhiều hình thức</h2>-->
+<!--						<p>Chúng tôi đáp ứng nhu cầu thanh toán của bạn với sự linh-->
+<!--							hoạt và tiện lợi. Bạn có thể chọn từ nhiều phương thức thanh-->
+<!--							toán phù hợp với bạn.</p>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="col-md-4 d-flex">-->
+<!--				<div class="intro color-2 d-lg-flex w-100 ftco-animate">-->
+<!--					<div class="icon">-->
+<!--						<span class="flaticon-free-delivery"></span>-->
+<!--					</div>-->
+<!--					<div class="text">-->
+<!--						<h2>Miễn phí giao hàng &amp; Hoàn trả</h2>-->
+<!--						<p>Chúng tôi cam kết cung cấp dịch vụ giao hàng nhanh chóng-->
+<!--							và miễn phí cho mọi đơn hàng của bạn. Chúng tôi cũng nhận đổi-->
+<!--							hoặc hoàn trả một cách dễ dàng và không mất phí.</p>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</section>-->
+
+<!--section danh sách sân-->
+<section class="ftco-section">
+	<div class="container">
+		<div class="row justify-content-center pb-5">
+			<div class="col-md-7 heading-section text-center ftco-animate">
+
+				<h2>TẤT CẢ CÁC SÂN</h2>
+			</div>
+		</div>
+		<div class="row d-flex" id="fieldContainer">
+			<div class="col-lg-6 d-flex align-items-stretch ftco-animate"
+				 th:each="f, iterStat : ${fieldList}"
+				 th:attr="data-index=${iterStat.index}"
+				 th:classappend="${iterStat.index >= 4} ? ' d-none'" >
+				<div class="blog-entry d-flex">
+					<img class="block-20 img" alt="" th:src="${f.image}">
+					<div class="text p-4 bg-light">
+						<h3 class="heading mb-3">
+							<a th:href="@{/field-detail(id=${f.id})}" th:text="${f.nameField}"></a>
+						</h3>
+						<p>
+							<span class="text-success font-weight-bold">Giá tiền</span>: <span
+								class="text-danger font-weight-bold">[[${#numbers.formatDecimal(f.price, 0, 'COMMA', 0, 'POINT')}]].đ</span>
+						</p>
+						<p>
+							<span class="text-success font-weight-bold">Địa chỉ</span>: <span
+								class="text-dark font-weight" th:text="${f.address}"></span>
+						</p>
+						<a th:href="@{/field-detail(id=${f.id})}" class="btn-custom">Chi tiết <span
+								class="fa fa-long-arrow-right"></span></a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+				<a id="loadMoreBtn" class="btn btn-primary d-block">Xem thêm sân
+				</a>
+			</div>
+		</div>
+</section>
+
+<!--section sản phẩm-->
+<section class="ftco-section"  id="listproductindex">
+	<div class="container">
+		<div class="row justify-content-center pb-5">
+			<div class="col-md-7 heading-section text-center ftco-animate">
+				<h2>SẢN PHẨM TRONG CỬA HÀNG</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3 col-sm-6 col-6" th:each="s : ${sanPhamList}">
+				<a th:href="@{chitietsanpham(id=${s.id})}" class="linkpro">
+					<div class="singlepro">
+						<div class="productsold"><span class="reviewsp" th:text="${'Đã bán '+s.quantitySold}"></span></div>
+						<img th:src="${s.image}" class="imgpro">
+						<span class="proname" th:text="${s.productName}"></span>
+						<span class="proprice">[[${#numbers.formatDecimal(s.price, 0, 'COMMA', 0, 'POINT')}]].đ</span>
+					</div>
+				</a>
+			</div>
+		</div>
+		<nav aria-label="Page navigation" class="navigationpage">
+			<ul class="pagination justify-content-center">
+				<!-- Nút Previous -->
+				<li class="page-item" th:classappend="${pageable.pageNumber == 0} ? 'disabled'">
+					<a class="page-link" th:href="@{/index(page=${pageable.pageNumber - 1}, size=${pageable.pageSize})}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+
+				<!-- Các trang -->
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, tongSoTrang - 1)}"
+					th:classappend="${i == pageable.pageNumber} ? 'active'">
+					<a class="page-link" th:href="@{/index#listproductindex(page=${i}, size=${pageable.pageSize})}" th:text="${i + 1}">1</a>
+				</li>
+
+				<!-- Nút Next -->
+				<li class="page-item" th:classappend="${pageable.pageNumber >= tongSoTrang - 1} ? 'disabled'">
+					<a class="page-link" th:href="@{/index(page=${pageable.pageNumber + 1}, size=${pageable.pageSize})}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+</section>
+
+<!--section phụ-->
+<!--<section class="ftco-section testimony-section img"-->
+<!--		 style="background-image: url(/user/images/bgcaunoi.jpg);">-->
+<!--	<div class="overlay"></div>-->
+<!--	<div class="container">-->
+<!--		<div class="row justify-content-center mb-5">-->
+<!--			<div-->
+<!--					class="col-md-7 text-center heading-section heading-section-white ftco-animate">-->
+<!--				<span class="subheading">Câu nói</span>-->
+<!--				<h2 class="mb-3">Truyền cảm hứng</h2>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="row ftco-animate">-->
+<!--			<div class="col-md-12">-->
+<!--				<div class="carousel-testimony owl-carousel ftco-owl">-->
+<!--					<div class="item">-->
+<!--						<div class="testimony-wrap py-4">-->
+<!--							<div-->
+<!--									class="icon d-flex align-items-center justify-content-center">-->
+<!--									<span class="fa fa-quote-left">-->
+<!--							</div>-->
+<!--							<div class="text">-->
+<!--								<p class="mb-4">“Thành công không phải là bất ngờ. Đó là-->
+<!--									công việc khó khăn, kiên trì, học hỏi, học tập, hy sinh và hơn-->
+<!--									hết, tình yêu của những gì bạn đang làm hoặc học tập để làm”.-->
+<!--								</p>-->
+<!--								<br> <br>-->
+<!--								<div class="d-flex align-items-center">-->
+<!--									<div class="user-img"-->
+<!--										 style="background-image: url(/user/images/pele.png)"></div>-->
+<!--									<div class="pl-3">-->
+<!--										<p class="name">Pelé</p>-->
+<!--										<span class="position">Ngôi sao vĩ đại trên sân cỏ</span>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="item">-->
+<!--						<div class="testimony-wrap py-4">-->
+<!--							<div-->
+<!--									class="icon d-flex align-items-center justify-content-center">-->
+<!--								<span class="fa fa-quote-left"></span>-->
+<!--							</div>-->
+<!--							<div class="text">-->
+<!--								<p class="mb-4">“Mỗi năm tôi đều cố gắng phấn đấu với tư-->
+<!--									cách là một cầu thủ. Và tôi không muốn sự nghiệp của mình đi-->
+<!--									theo một lối mòn. Tôi luôn cố gắng trong mỗi trận đấu theo mọi-->
+<!--									cách có thể.”</p>-->
+<!--								<br> <br>-->
+<!--								<div class="d-flex align-items-center">-->
+<!--									<div class="user-img"-->
+<!--										 style="background-image: url(/user/images/messi.png)"></div>-->
+<!--									<div class="pl-3">-->
+<!--										<p class="name">Lionel Messi</p>-->
+<!--										<span class="position">Cầu thủ xuất sắc nhất thế giới.</span>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="item">-->
+<!--						<div class="testimony-wrap py-4">-->
+<!--							<div-->
+<!--									class="icon d-flex align-items-center justify-content-center">-->
+<!--								<span class="fa fa-quote-left"></span>-->
+<!--							</div>-->
+<!--							<div class="text">-->
+<!--								<p class="mb-4">"Đã chọn thể thao thì bắt buộc phải nỗ lực-->
+<!--									và hy sinh, bởi tôi muốn vươn lên đỉnh cao trong sự nghiệp,-->
+<!--									bởi kỷ lục không bao giờ có giới hạn, nên với tôi ngày hôm nay-->
+<!--									phải tốt hơn ngày hôm qua."</p>-->
+<!--								<br>-->
+<!--								<div class="d-flex align-items-center">-->
+<!--									<div class="user-img"-->
+<!--										 style="background-image: url(/user/images/anhvien.jpg)"></div>-->
+<!--									<div class="pl-3">-->
+<!--										<p class="name">Nguyễn Thị Ánh Viên</p>-->
+<!--										<span class="position">Vận động viên bơi lội</span>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="item">-->
+<!--						<div class="testimony-wrap py-4">-->
+<!--							<div-->
+<!--									class="icon d-flex align-items-center justify-content-center">-->
+<!--								<span class="fa fa-quote-left"></span>-->
+<!--							</div>-->
+<!--							<div class="text">-->
+<!--								<p class="mb-4">"Tôi đã trượt hơn 9000 cú ném trong sự-->
+<!--									nghiệp của mình. Tôi đã thua gần 300 trận đấu. 26 lần tôi được-->
+<!--									tin tưởng giao cho cú ném quyết định trận đấu và bỏ lỡ chúng.-->
+<!--									Tôi đã thất bại hết lần này đến lần khác trong đời mình. Và đó-->
+<!--									là lý do tôi thành công."</p>-->
+<!--								<div class="d-flex align-items-center">-->
+<!--									<div class="user-img"-->
+<!--										 style="background-image: url(/user/images/ro.jpg)"></div>-->
+<!--									<div class="pl-3">-->
+<!--										<p class="name">Michael Jordan</p>-->
+<!--										<span class="position">Cựu cầu thủ bóng rổ thế giới</span>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="item">-->
+<!--						<div class="testimony-wrap py-4">-->
+<!--							<div>-->
+<!--									class="icon d-flex align-items-center justify-content-center">-->
+<!--									<span class="fa fa-quote-left">-->
+<!--							</div>-->
+<!--							<div class="text">-->
+<!--								<p class="mb-4">"Đừng ngại thất bại, đó là con đường dẫn-->
+<!--									đến thành công."</p>-->
+<!--								<br> <br> <br> <br>-->
+<!--								<div class="d-flex align-items-center">-->
+<!--									<div class="user-img"-->
+<!--										 style="background-image: url(/user/images/LeBron_James.jpg)"></div>-->
+<!--									<div class="pl-3">-->
+<!--										<p class="name">LeBron James</p>-->
+<!--										<span class="position">Vận động viên bóng rổ Hoa Kỳ</span>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</section>-->
+
+<!--section bài viết-->
+<!--<section class="ftco-section">-->
+<!--	<div class="container">-->
+<!--		<div class="row justify-content-center mb-5">-->
+<!--			<div class="col-md-7 heading-section text-center ftco-animate">-->
+<!--				<h2>HOẠT ĐỘNG</h2>-->
+<!--				<span class="subheading">Trong tháng <span-->
+<!--						th:text="${#dates.format(#dates.createNow(), 'MM')}"></span></span>-->
+
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="row blofindex">-->
+<!--			<div class="col-lg-6 col-md-6 col-sm-6 col-12" id="instructmain">-->
+<!--				<div class="zoom-img"><a th:href="@{chitietblog(id=${lastBlog.id})}"><img class="imgproduct" th:src="${lastBlog.image}"></a></div>-->
+<!--				<a th:href="@{chitietblog(id=${lastBlog.id})}" class="blognamespe" th:text="${lastBlog.nameEvent}"></a>-->
+<!--				<span class="timeblogindex" th:text="${lastBlog.dateStart} +' đến '+ ${lastBlog.dateEnd}"></span>-->
+<!--				<span class="descriptionblog" th:utext="${lastBlog.descriptions}"></span>-->
+<!--			</div>-->
+<!--			<div class="col-lg-6 col-md-6 col-sm-6 col-12">-->
+<!--				<div class="row" id="listinstructindex">-->
+<!--					<div class="row single-blogindex" th:each="blog : ${listBlog}">-->
+<!--						<div class="col-3">-->
+<!--							<div class="zoom-img"><a th:href="@{chitietblog(id=${blog.id})}"><img class="imgproduct" th:src="${blog.image}"></a></div>-->
+<!--						</div>-->
+<!--						<div class="col-9">-->
+<!--							<a th:href="@{chitietblog(id=${blog.id})}" class="tille-single-blogindex" th:text="${blog.nameEvent}"></a>-->
+<!--							<span class="timeblogindex" th:text="${blog.dateStart} +' đến '+ ${blog.dateEnd}"></span>-->
+<!--							<span class="desblogindex" th:utext="${blog.descriptions}"></span>-->
+<!--						</div>-->
+<!--						<div class="col-12"><hr></div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="row justify-content-center">-->
+<!--			<div class="col-md-4">-->
+<!--				<a th:href="@{/event}" class="btn btn-primary d-block">Xem thêm tin tức-->
+<!--				</a>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</section>-->
+
+<div th:replace="fragment/footeruser :: footerUser"></div>
+
+
+</body>
+<script>
+	let shownCount = 4; // Bắt đầu với 4 sân
+
+	$('#loadMoreBtn').on('click', function () {
+		const allItems = $('#fieldContainer > .col-lg-6');
+		const total = allItems.length;
+		const nextCount = shownCount + 4; // Hiển thị thêm 4 mỗi lần
+		allItems.each(function (index) {
+			if (index < nextCount) {
+				$(this).removeClass('d-none');
+			}
+		});
+		shownCount = nextCount;
+		if (shownCount >= total) {
+			$('#loadMoreBtn').addClass('d-none'); // Ẩn nút nếu đã hiện hết
+		}
+	});
+</script>
+
+
+</html>

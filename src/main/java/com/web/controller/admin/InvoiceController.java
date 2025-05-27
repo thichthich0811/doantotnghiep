@@ -1,8 +1,6 @@
 package com.web.controller.admin;
-
 import com.web.entity.Orderdetails;
 import com.web.entity.Orders;
-import com.web.enums.Paytype;
 import com.web.repository.OrderDAO;
 import com.web.repository.ProductDAO;
 import com.web.utils.OrderStatus;
@@ -14,21 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller(value = "adminInvoiceController")
 @RequestMapping("/admin")
 public class InvoiceController {
-
     @Autowired
     private OrderDAO invoiceRepository;
-
     @Autowired
     private ProductDAO productDAO;
-
     @RequestMapping(value = {"/invoice"}, method = RequestMethod.GET)
     public String invoice(Model model, @RequestParam(required = false) String fromDate,
                           @RequestParam(required = false) String toDate,
@@ -71,7 +64,6 @@ public class InvoiceController {
         model.addAttribute("listInvoice", list);
         return "admin/invoice";
     }
-
     @PostMapping("/update-status-invoice")
     public String updateStatus(@RequestParam Integer invoiceId, @RequestParam String statusName, RedirectAttributes redirectAttributes) {
         Orders orders = invoiceRepository.findById(invoiceId).get();

@@ -3,7 +3,6 @@ import com.web.entity.Products;
 import com.web.repository.CategoryDAO;
 import com.web.repository.ProductDAO;
 import com.web.utils.CloudinaryService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +11,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Controller(value = "adminProductController")
 @RequestMapping("/admin")
 public class ProductAdmin {
-
     @Autowired
     private ProductDAO productRepository;
-
     @Autowired
     private CategoryDAO categoryRepository;
-
     @Autowired
     private CloudinaryService cloudinaryService;
-
-
     @RequestMapping(value = {"/product"}, method = RequestMethod.GET)
     public String product(Model model, @RequestParam(required = false) Long category) {
         if(category != null){
@@ -46,7 +39,6 @@ public class ProductAdmin {
         model.addAttribute("listCategory", categoryRepository.findAll());
         return "admin/product";
     }
-
     @RequestMapping(value = {"/addproduct"}, method = RequestMethod.GET)
     public String addproduct(Model model,@RequestParam(required = false) Integer id) {
         if(id == null){

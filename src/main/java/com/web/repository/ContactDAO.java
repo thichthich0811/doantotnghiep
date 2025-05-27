@@ -1,14 +1,10 @@
 package com.web.repository;
 
-
 import com.web.entity.Contacts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface ContactDAO extends JpaRepository<Contacts, Integer> {
 

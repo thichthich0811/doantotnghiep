@@ -1,9 +1,7 @@
 package com.web.controller.user;
 
-import com.web.entity.Cart;
 import com.web.entity.User;
 import com.web.repository.BookingDAO;
-import com.web.repository.CartRepository;
 import com.web.repository.OrderDAO;
 import com.web.repository.UserRepository;
 import com.web.utils.UserUtils;
@@ -17,23 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 @Controller(value = "taiKhoanUserController")
 public class AccountController {
-
     @Autowired
     private OrderDAO invoiceRepository;
-
     @Autowired
     private BookingDAO bookingDAO;
-
     @Autowired
     private UserUtils userUtils;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserRepository userRepository;
 

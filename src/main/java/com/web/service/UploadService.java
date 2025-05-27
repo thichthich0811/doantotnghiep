@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class UploadService {
 	@Autowired
-	ServletContext app;
+	private ServletContext app;
 	
 	public File save(MultipartFile file, String folder, String destinationDir) {
 		// TODO Auto-generated method stub

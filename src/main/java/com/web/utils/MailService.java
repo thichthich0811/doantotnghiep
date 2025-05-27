@@ -16,17 +16,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 @EnableAsync
 public class MailService {
-
     private final JavaMailSender javaMailSender;
-
     private String username = "thich0811@gmail.com";
-
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
-
     public MailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {

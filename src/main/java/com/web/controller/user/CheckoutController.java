@@ -1,16 +1,11 @@
 package com.web.controller.user;
 import com.web.entity.*;
-import com.web.enums.Paytype;
 import com.web.repository.*;
 import com.web.utils.OrderStatus;
 import com.web.utils.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,25 +17,18 @@ import java.util.List;
 @Controller
 @RequestMapping(value = {"/checkout"})
 public class CheckoutController {
-
     @Autowired
     private CartRepository cartRepository;
-
     @Autowired
     private ProductDAO productRepository;
-
     @Autowired
     private UserUtils userUtils;
-
     @Autowired
     private OrderDAO orderDAO;
-
     @Autowired
     private OrderDetailDAO orderDetailDAO;
-
     @Autowired
     private VoucherDAO voucherDAO;
-
     @Autowired
     private UserRepository userRepository;
 

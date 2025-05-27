@@ -24,40 +24,28 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 
-@SuppressWarnings("unused")
 @Controller
 public class TeamController {
-
     @Autowired
     private TeamDAO teamdao;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
-    UserUtils userUtils;
-
+    private UserUtils userUtils;
     @Autowired
-    TeamDetailDAO detailDAO;
-
+    private TeamDetailDAO detailDAO;
     @Autowired
-    TeamDetailService teamDetailService;
-
+    private TeamDetailService teamDetailService;
     @Autowired
-    TeamService teamService;
-
+    private TeamService teamService;
     @Autowired
-    SportTypeService sportTypeService;
-
+    private SportTypeService sportTypeService;
     @Autowired
-    CloudinaryService cloudinaryService;
-
+    private CloudinaryService cloudinaryService;
     @Autowired
-    SportTypeDAO sportTypeDAO;
-
-    Integer size = 4;
+    private SportTypeDAO sportTypeDAO;
+    private Integer size = 4;
 
     @ModelAttribute("sporttypeList")
     public List<Sporttype> getSporttypeList() {

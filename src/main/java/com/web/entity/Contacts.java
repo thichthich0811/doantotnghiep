@@ -1,15 +1,10 @@
 package com.web.entity;
-
-
-
 import java.sql.Date;
-import java.util.regex.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="contact" )
 @Getter

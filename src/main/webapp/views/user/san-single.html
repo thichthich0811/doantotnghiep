@@ -90,7 +90,7 @@
 
 					<div class=" align-self-end mb-5" th:unless="${#strings.isEmpty(date)}">
 						<a class="booking-link" th:href="@{/field/booking/{idField}(idField=${field.id})}">
-						<button class="col-4 pt-3 pb-3 btn btn-success" style="font-size: 17px; font-weight: bold;">Đặt sân ngay</button>
+						<button th:if="${userlogged != null}" class="col-4 pt-3 pb-3 btn btn-success" style="font-size: 17px; font-weight: bold;">Đặt sân ngay</button>
 						</a>
 					</div>
 		

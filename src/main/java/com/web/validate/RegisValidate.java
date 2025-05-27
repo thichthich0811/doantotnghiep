@@ -1,12 +1,10 @@
 package com.web.validate;
 
-import com.cloudinary.provisioning.Account;
 import com.web.entity.User;
 import com.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.util.Optional;

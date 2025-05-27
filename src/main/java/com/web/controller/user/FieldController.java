@@ -33,45 +33,31 @@ import java.util.*;
 
 @Controller
 public class FieldController {
-
     String userlogin = null;
-
     @Autowired
     private FieldService fieldService;
-
     @Autowired
     private ShiftService shiftService;
-
     @Autowired
     private FieldDAO fieldDAO;
-
     @Autowired
     private VoucherService voucherService;
-
     @Autowired
     private UserUtils userUtils;
-
     @Autowired
     private VNPayService vnPayService;
-
     @Autowired
     private BookingDAO bookingDAO;
-
     @Autowired
     private BookingDetailDAO bookingDetailDAO;
-
     @Autowired
     private SportTypeDAO sportTypeDAO;
-
     @Autowired
     private ShiftDAO shiftDAO;
-
     @Autowired
     private VoucherDAO voucherDAO;
-
     private Date dateselect;
-
-    LocalTime time = null;
+    private LocalTime time = null;
 
     @GetMapping("/field-detail")
     public String viewDetail(Model model, @RequestParam("id") Integer id, HttpServletRequest request) {
@@ -227,9 +213,6 @@ public class FieldController {
         // Gọi trang checkout
         return "user/checkout-dat-san";
     }
-
-
-
     @PostMapping("/getIp/create")
     public String createPayment(
             @RequestParam("amount") String inputMoney, HttpServletRequest request, HttpSession session,

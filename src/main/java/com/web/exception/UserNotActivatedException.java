@@ -1,8 +1,5 @@
 package com.web.exception;
-
-
 import org.springframework.security.core.AuthenticationException;
-
 public class UserNotActivatedException extends AuthenticationException {
     private final String email;
 

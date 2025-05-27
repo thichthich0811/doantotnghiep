@@ -1,18 +1,12 @@
 package com.web.repository;
 
-
 import com.web.entity.Eventweb;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
-
-@SuppressWarnings("unused")
 public interface EventDAO extends JpaRepository<Eventweb, Integer> {
 
     @Query(value = "SELECT COUNT(*) FROM eventweb;", nativeQuery = true)

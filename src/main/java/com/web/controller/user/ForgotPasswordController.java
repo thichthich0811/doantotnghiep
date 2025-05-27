@@ -24,24 +24,18 @@ import java.util.UUID;
 public class ForgotPasswordController {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RegisValidate regisValidate;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private MailService mailService;
-
     @Autowired
     private UserUtils userUtils;
-
     @RequestMapping(value = {"/forgot"}, method = RequestMethod.GET)
     public String forgot(Model model) {
         return "user/forgot";
     }
-
     @RequestMapping(value = {"/datlaimatkhau"}, method = RequestMethod.GET)
     public String datlaimatkhau(Model model,@RequestParam String email, @RequestParam String key) {
         model.addAttribute("email",email);
@@ -75,7 +69,6 @@ public class ForgotPasswordController {
         redirectAttributes.addFlashAttribute("success","");
         return "redirect:/forgot";
     }
-
     @PostMapping("/datlaimatkhau")
     public String datLaiMatKhau(@RequestParam String email, @RequestParam String key, HttpServletRequest request,
                                 @RequestParam String password, RedirectAttributes redirectAttributes) throws URISyntaxException {

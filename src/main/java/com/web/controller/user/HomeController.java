@@ -1,5 +1,4 @@
 package com.web.controller.user;
-
 import com.web.entity.Field;
 import com.web.entity.Products;
 import com.web.repository.*;
@@ -16,20 +15,15 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-
     @Autowired
     private EventDAO eventDAO;
     @Autowired
     private FieldDAO fieldDAO;
-
     @Autowired
     private BookingDetailDAO bookingDetailDAO;
-
     @Autowired
     private ProductDAO productDAO;
-
     private Integer size = 8;
-
     @GetMapping(value = {"/","/index"})
     public String view(Model model, HttpServletRequest request, Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());

@@ -1,5 +1,4 @@
 package com.web.controller.user;
-
 import com.web.repository.EventDAO;
 import com.web.repository.FieldDAO;
 import com.web.repository.ProductDAO;
@@ -8,19 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import java.util.List;
-
 @Controller(value = "about")
 public class AboutController {
     @Autowired
-    UserRepository userDAO;
+    private UserRepository userDAO;
     @Autowired
-    FieldDAO fieldDAO;
+    private FieldDAO fieldDAO;
     @Autowired
-    ProductDAO productDAO;
+    private ProductDAO productDAO;
     @Autowired
-    EventDAO eventDAO;
+    private EventDAO eventDAO;
     @GetMapping("/about")
     public String about(Model model){
         Long userCount = userDAO.count();
@@ -34,7 +31,6 @@ public class AboutController {
         model.addAttribute("productCount", productCount);
         return "user/about";
     }
-
     @GetMapping("chinhsach")
     public String viewchinhsach(Model model) {
         return"user/chinhsach";

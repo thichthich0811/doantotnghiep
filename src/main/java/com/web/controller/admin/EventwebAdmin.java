@@ -1,5 +1,4 @@
 package com.web.controller.admin;
-
 import com.web.entity.Eventweb;
 import com.web.repository.EventDAO;
 import com.web.utils.CloudinaryService;
@@ -9,19 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.sql.Date;
-
 @Controller(value = "adminEventwebController")
 @RequestMapping("/admin")
 public class EventwebAdmin {
-
     @Autowired
     private EventDAO eventDAO;
-
     @Autowired
     private CloudinaryService cloudinaryService;
-
     @RequestMapping(value = {"/events"}, method = RequestMethod.GET)
     public String events(Model model, @RequestParam(required = false) Date start
             , @RequestParam(required = false) Date end) {

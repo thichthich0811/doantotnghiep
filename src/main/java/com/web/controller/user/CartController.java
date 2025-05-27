@@ -1,6 +1,5 @@
 package com.web.controller.user;
 
-
 import com.web.entity.Cart;
 import com.web.entity.Products;
 import com.web.entity.User;
@@ -14,22 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class CartController {
-
     @Autowired
     private CartRepository cartRepository;
-
     @Autowired
     private ProductDAO productRepository;
-
     @Autowired
     private VoucherDAO voucherDAO;
-
     @Autowired
     private UserUtils userUtils;
 

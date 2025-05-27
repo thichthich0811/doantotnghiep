@@ -9,18 +9,14 @@ import org.springframework.ui.Model;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
-
-
     @Autowired
     private UserUtils userUtils;
-
     @Autowired
     private CartRepository cartRepository;
 
     @ModelAttribute
     public void addGlobalAttributes(Model model) {
         model.addAttribute("soLuongGhGlobal", 0);
-
         User user = userUtils.getUserWithAuthority();
         if (user != null){
             model.addAttribute("soLuongGhGlobal", cartRepository.soLuongGh(user.getId()));

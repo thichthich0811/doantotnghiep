@@ -12,17 +12,26 @@
 <div class="contentlogin loginpage">
     <div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
         <p class="plogintl"><span class="dangtl">ĐĂNG </span><span class="kytl">KÝ</span></p>
-        <form class="inputloginform" method="post" action="/regis" th:object="${user}">
-            <input name="fullName" placeholder="Họ tên" class="inputform">
-            <input name="phone" placeholder="Số điện thoại" class="inputform">
-            <input name="email" placeholder="Địa chỉ email" class="inputform" type="email" required>
-            <input name="password" placeholder="Mật khẩu" class="inputform" type="password" required>
+        <form class="inputloginform" method="post" th:action="@{/regis}" th:object="${user}">
+            <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="text-danger"></span>
+            <input th:field="*{fullName}" placeholder="Họ tên" class="inputform" required>
+
+            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+            <input th:field="*{phone}" placeholder="Số điện thoại" class="inputform" required>
+
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+            <input th:field="*{email}" placeholder="Địa chỉ email" class="inputform" type="email" required>
+
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+            <input th:field="*{password}" placeholder="Mật khẩu" class="inputform" type="password" required>
+
+
             <button class="btndn">Đăng Ký</button>
-            <p class="quenmk"><a href="index">
-                ← Quay lại trang chủ – VT SPORT
-            </a></p>
+
+            <p class="quenmk"><a href="index">← Quay lại trang chủ – VT SPORT</a></p>
             <p class="nothvaccount"><span>Bạn đã có tài khoản? </span><a href="login" class="aquenmk">Đăng nhập ngay</a></p>
         </form>
+
     </div>
 </div>
 </body>

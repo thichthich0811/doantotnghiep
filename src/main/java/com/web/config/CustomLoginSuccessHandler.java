@@ -20,8 +20,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private UserRepository userRepository;
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,

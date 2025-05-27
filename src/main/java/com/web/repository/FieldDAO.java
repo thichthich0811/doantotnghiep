@@ -1,19 +1,10 @@
 package com.web.repository;
-
-
-
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
-
 import com.web.entity.Field;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-
-
-@SuppressWarnings("unused")
 public interface FieldDAO extends JpaRepository<Field, Integer>{
 	
 	@Query(value="SELECT COUNT(*) FROM field;", nativeQuery = true)

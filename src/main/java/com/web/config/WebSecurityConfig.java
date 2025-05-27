@@ -1,6 +1,4 @@
 package com.web.config;
-
-
 import com.web.exception.UserNotActivatedException;
 import com.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,25 +18,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig  {
-
     @Autowired
     private CustomLoginSuccessHandler customLoginSuccessHandler;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
@@ -104,14 +95,12 @@ public class WebSecurityConfig  {
                     grantList.add(authority);
                 }
             }
-
             String password = user.get().getPassword();
             UserDetails userDetails = (UserDetails) new User(username, //
                     password, grantList);
             return userDetails;
         };
     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -119,7 +108,6 @@ public class WebSecurityConfig  {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

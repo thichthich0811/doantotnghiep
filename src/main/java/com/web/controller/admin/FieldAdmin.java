@@ -1,10 +1,7 @@
 package com.web.controller.admin;
 
 import com.web.entity.Field;
-import com.web.entity.Products;
-import com.web.repository.CategoryDAO;
 import com.web.repository.FieldDAO;
-import com.web.repository.ProductDAO;
 import com.web.repository.SportTypeDAO;
 import com.web.utils.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.sql.Date;
 import java.util.List;
 
 @Controller(value = "adminFieldController")
 @RequestMapping("/admin")
 public class FieldAdmin {
-
     @Autowired
     private FieldDAO fieldDAO;
-
     @Autowired
     private SportTypeDAO sportTypeDAO;
-
     @Autowired
     private CloudinaryService cloudinaryService;
-
-
     @RequestMapping(value = {"/fields"}, method = RequestMethod.GET)
     public String product(Model model, @RequestParam(required = false) Integer category) {
         if(category != null){

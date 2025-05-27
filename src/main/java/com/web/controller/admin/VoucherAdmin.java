@@ -1,27 +1,20 @@
 package com.web.controller.admin;
 
-import com.web.entity.Field;
-import com.web.entity.Sporttype;
 import com.web.entity.Voucher;
-import com.web.repository.SportTypeDAO;
 import com.web.repository.VoucherDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class VoucherAdmin {
-
     @Autowired
     private VoucherDAO voucherDAO;
-
     @RequestMapping(value = {"/voucher"}, method = RequestMethod.GET)
     public String vouchers(Model model, @RequestParam(required = false) String loai) {
         List<Voucher> list = voucherDAO.findAll();
@@ -39,7 +32,6 @@ public class VoucherAdmin {
         model.addAttribute("listvoucher", list);
         return "admin/voucher";
     }
-
     @RequestMapping(value = {"/addvoucher"}, method = RequestMethod.GET)
     public String addField(Model model,@RequestParam(required = false) Integer id) {
         if(id == null){
@@ -73,7 +65,6 @@ public class VoucherAdmin {
         redirectAttributes.addFlashAttribute("success", "Thêm voucher thành công!");
         return "redirect:/admin/voucher";
     }
-
 
     @GetMapping("/delete-voucher")
     public String deleteField(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes){

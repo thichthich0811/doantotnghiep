@@ -5,9 +5,7 @@ import com.web.enums.Role;
 import com.web.repository.UserRepository;
 import com.web.utils.MailService;
 import com.web.utils.UserUtils;
-import com.web.validate.RegisValidate;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,19 +19,12 @@ import java.util.Optional;
 
 @Controller
 public class RegisController {
-
     @Autowired
     private UserRepository userRepository;
-
-//    @Autowired
-//    private RegisValidate regisValidate;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private MailService mailService;
-
     @Autowired
     private UserUtils userUtils;
 
@@ -49,8 +40,15 @@ public class RegisController {
     }
 
     @PostMapping("/regis")
-    public String regisUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+    public String regisUser( @ModelAttribute("user") @Valid User user,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes,
+                             Model model) {
         System.out.println(user.getEmail());
+        if (bindingResult.hasErrors()) {
+            // Trả lại trang form với lỗi
+            return "user/regis";
+        }
         Optional<User> ex = userRepository.findByEmail(user.getEmail());
         if(ex.isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Email đã được sử dụng!");
@@ -72,12 +70,12 @@ public class RegisController {
     @PostMapping("/confirm")
     public String confirmPost(@RequestParam String email, @RequestParam String key, RedirectAttributes redirectAttributes) {
         Optional<User> user = userRepository.getUserByActivationKeyAndEmail(key, email);
-        user.ifPresent(exist->{
+        if (user.isPresent()) {
+            User exist = user.get();
             exist.setActivationKey(null);
             exist.setActived(true);
             userRepository.save(exist);
-            return;
-        });
+        }
         if(user.isEmpty()){
             redirectAttributes.addFlashAttribute("error", "Mã xác nhận không chính xác!");
             return "redirect:/confirm?email="+email;

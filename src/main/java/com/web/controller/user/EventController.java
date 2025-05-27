@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller(value = "userInstructController")
 public class EventController {
-
     @Autowired
     private EventDAO eventDAO;
-
     private Integer size = 8;
-
     @RequestMapping(value = {"/event"}, method = RequestMethod.GET)
     public String blog(Model model, @RequestParam(required = false) String search, Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
@@ -31,7 +28,6 @@ public class EventController {
         model.addAttribute("pageable", pageable);
         return "user/blog";
     }
-
     @RequestMapping(value = {"/event-detail"}, method = RequestMethod.GET)
     public String chiTietBlog(Model model, @RequestParam Integer id) {
         model.addAttribute("event", eventDAO.findById(id).get());

@@ -1,15 +1,12 @@
 package com.web.repository;
 
-
 import com.web.entity.Bookingdetails;
-import com.web.entity.Field;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 public interface BookingDetailDAO extends JpaRepository<Bookingdetails, Integer> {
 
 	@Query(value = "SELECT  s.* FROM bookingdetails bd\r\n"

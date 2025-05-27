@@ -1,5 +1,4 @@
 package com.web.controller.admin;
-
 import com.web.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,31 +6,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 @Controller
 @RequestMapping("/admin")
 public class DashbroadController {
-
     @Autowired
-    ProductDAO productDAO;
+    private ProductDAO productDAO;
     @Autowired
-    BookingDAO bookingDAO;
+    private BookingDAO bookingDAO;
     @Autowired
-    FieldDAO fieldDAO;
+    private FieldDAO fieldDAO;
     @Autowired
-    UserRepository userDAO;
+    private UserRepository userDAO;
     @Autowired
-    OrderDAO orderDAO;
+    private OrderDAO orderDAO;
     @Autowired
-    EventDAO eventDAO;
+    private EventDAO eventDAO;
     @Autowired
-    ContactDAO contactDAO;
+    private ContactDAO contactDAO;
     @Autowired
-    BookingDetailDAO bookingDetailDAO;
+    private BookingDetailDAO bookingDetailDAO;
 
     @GetMapping("/index")
     public String dashbroad(Model model,@RequestParam(required = false) Integer year) {
@@ -45,7 +41,6 @@ public class DashbroadController {
         model.addAttribute("listContactToday", contactDAO.findAllByDate());
         model.addAttribute("top3SanDatNhieu", bookingDetailDAO.top3SanDatNhieu());
         model.addAttribute("top3SanPhamNhieu", productDAO.top3BanChay());
-
         if(year == null){
             year = LocalDate.now().getYear();
         }

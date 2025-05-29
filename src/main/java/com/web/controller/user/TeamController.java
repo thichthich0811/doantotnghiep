@@ -47,11 +47,6 @@ public class TeamController {
     private SportTypeDAO sportTypeDAO;
     private Integer size = 4;
 
-    @ModelAttribute("sporttypeList")
-    public List<Sporttype> getSporttypeList() {
-        return sportTypeDAO.findAll();
-    }
-
     // Đỗ toàn bộ dữ liệu liên quan đến team
     @GetMapping("/team")
     public String viewTeam(Model model, HttpServletRequest request, Pageable pageable,

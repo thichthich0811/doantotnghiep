@@ -39,7 +39,7 @@ public class CheckoutController {
         List<Cart> list = cartRepository.findByUser(userUtils.getUserWithAuthority().getId());
         Double d = 0D;
         for(Cart g : list){
-            d += g.getQuantity() * g.getProducts().getPrice();
+            d += g.getQuantity() * (g.getProducts().getPrice()-g.getProducts().getDiscountPrice());
             if(g.getQuantity() > g.getProducts().getQuantity()){
                 redirectAttributes.addFlashAttribute("warning", "Số lượng sản phẩm "+g.getProducts().getProductName()+" không được vượt quá: "+g.getProducts().getQuantity());
                 String referer = request.getHeader("Referer");
@@ -70,11 +70,9 @@ public class CheckoutController {
             od.setPrice(g.getProducts().getPrice());
             orderDetailDAO.save(od);
             g.getProducts().setQuantity(g.getProducts().getQuantity() - g.getQuantity());
+            g.getProducts().setQuantitySold(g.getQuantity());
             productRepository.save(g.getProducts());
-        }
-        if(user.getAddress() == null){
-            user.setAddress(address);
-            userRepository.save(user);
+            cartRepository.delete(g);
         }
         redirectAttributes.addFlashAttribute("success", "Đặt hàng thành công!");
         return "redirect:/cart";

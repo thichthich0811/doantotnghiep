@@ -26,13 +26,12 @@ public class CartController {
     private VoucherDAO voucherDAO;
     @Autowired
     private UserUtils userUtils;
-
     @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
     public String gioHang(Model model) {
         List<Cart> list = cartRepository.findByUser(userUtils.getUserWithAuthority().getId());
         Double d = 0D;
         for(Cart g : list){
-            d += g.getQuantity() * g.getProducts().getPrice();
+            d += g.getQuantity() * (g.getProducts().getPrice()-g.getProducts().getDiscountPrice());
         }
         model.addAttribute("gioHangList",list);
         model.addAttribute("tongTien",d);
@@ -82,5 +81,6 @@ public class CartController {
         redirectAttributes.addFlashAttribute("message", "Xóa giỏ hàng thành công!");
         return "redirect:cart";
     }
+    
 }
 

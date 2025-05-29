@@ -1,6 +1,5 @@
 package com.web.controller.user;
 
-import com.web.dto.PaymentResDTO;
 import com.web.entity.*;
 import com.web.repository.*;
 import com.web.service.FieldService;
@@ -8,7 +7,6 @@ import com.web.service.ShiftService;
 import com.web.service.VoucherService;
 import com.web.utils.BookingStatus;
 import com.web.utils.UserUtils;
-import com.web.vnpay.VNPayConfig;
 import com.web.vnpay.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,12 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

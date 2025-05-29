@@ -37,7 +37,8 @@
 								<th style="width: 30%">Sản phẩm</th>
 								<th style="width: 20%">Đơn giá</th>
 								<th style="width: 30%">Số lượng</th>
-								<th style="width: 20%">Tổng tiền</th>
+								<th style="width: 30%">Tổng tiền</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -48,7 +49,7 @@
 									<a th:href="@{chitietsanpham(id=${c.products.id})}" class="nameprocart" th:text="${c.products.productName}"></a>
 								</div>
 							</td>
-							<td>[[${#numbers.formatDecimal(c.products.price, 0, 'COMMA', 0, 'POINT')}]].đ</td>
+							<td>[[${#numbers.formatDecimal(c.products.price-c.products.discountPrice, 0, 'COMMA', 0, 'POINT')}]].đ</td>
 							<td>
 								<div class="clusinp">
 									<form action="/update-sl" method="post">
@@ -66,9 +67,11 @@
 							</td>
 							<td>
 								<div class="tdpricecart">
-									<p class="boldcart">[[${#numbers.formatDecimal(c.products.price*c.quantity, 0, 'COMMA', 0, 'POINT')}]].đ</p>
-									<a th:href="@{delete-giohang(id=${c.id})}" onclick="return confirm('Xác nhận xóa khỏi giỏ hàng?');" class="delcart"><i class="fa fa-trash facartde"></i></a>
+									<p class="boldcart">[[${#numbers.formatDecimal((c.products.price-c.products.discountPrice)*c.quantity, 0, 'COMMA', 0, 'POINT')}]].đ</p>
 								</div>
+							</td>
+							<td>
+								<a th:href="@{delete-giohang(id=${c.id})}" onclick="return confirm('Xác nhận xóa khỏi giỏ hàng?');" class="delcart"><i class="fa fa-trash facartde"></i></a>
 							</td>
 						</tr>
 						</tbody>
@@ -88,11 +91,11 @@
 						</tr>
 						<tr>
 							<td>Địa chỉ nhận: </td>
-							<td><input name="address" class="form-control" th:value="${userlogged.address}"></td>
+							<td><input name="address" class="form-control" th:value="${userlogged.address}" required></td>
 						</tr>
 						<tr>
 							<td>Số điện thoại: </td>
-							<td><input name="phone" class="form-control" th:value="${userlogged.phone}"></td>
+							<td><input name="phone" class="form-control" th:value="${userlogged.phone}" required></td>
 						</tr>
 						<tr>
 							<td colspan="2"><textarea class="form-control" name="note" placeholder="Ghi chú"></textarea></td>

@@ -31,12 +31,8 @@ public class HomeController {
         model.addAttribute("sanPhamList", page.getContent());
         model.addAttribute("tongSoTrang", page.getTotalPages());
         model.addAttribute("pageable", pageable);
-//        List<Object[]> eventList = eventDAO.fillEventInMonth();
-//        model.addAttribute("eventList", eventList);
         List<Field> fieldList = fieldDAO.findAll();
         model.addAttribute("fieldList", fieldList);
-//      model.addAttribute("lastBlog", eventDAO.lastEvent());
-//      model.addAttribute("listBlog", eventDAO.getEventIndex());
         return "user/index";
     }
 

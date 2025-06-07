@@ -10,19 +10,17 @@
 	<th:block th:replace="fragment/headerUser :: headerUser"></th:block>
 	<!-- END nav -->
 
-	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('/user/images/backgroundField.jpg');"
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/user/images/backgroundField.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
-			<div
-				class="row no-gutters slider-text align-items-end justify-content-center">
+			<div class="row no-gutters slider-text align-items-end justify-content-center">
 				<div class="col-md-9 ftco-animate mb-5 text-center">
 					<p class="breadcrumbs mb-0">
-						<span class="mr-2"><a th:href="@{/sportify}">Trang Chủ
+						<span class="mr-2"><a th:href="@{/}">Trang Chủ
 								<i class="fa fa-chevron-right"></i>
-						</a></span> <span><a th:href="@{/sportify/field}">Sân<i
-								class="fa fa-chevron-right"></i></a></span> <span>Chi tiết sân</span>
+							</a></span> <span><a th:href="@{/field}">Sân<i class="fa fa-chevron-right"></i></a></span>
+						<span>Chi tiết sân</span>
 					</p>
 					<h2 class="mb-0 bread">Chi Tiết Sân</h2>
 				</div>
@@ -32,75 +30,72 @@
 
 	<section class="ftco-section">
 		<div class="container">
-			<div class="row" >
+			<div class="row">
 				<div class="col-lg-6 mb-5 ftco-animate">
-					<img class="block-20 block-19 img"
-						th:src="${field.image}" alt="Image">
+					<img class="block-20 block-19 img" th:src="${field.image}" alt="Image">
 
 				</div>
-				<div class="col-lg-6  pl-md-5 ftco-animate border border-success rounded"
-					style="height: auto">
+				<div class="col-lg-6  pl-md-5 ftco-animate border border-success rounded" style="height: auto">
 					<h3 th:text="${field.nameField}" class="mt-4"></h3>
-					<svg	 xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-						fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-  					<path
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+						class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+						<path
 							d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
 					</svg>
 					<b class="font-italic" th:text="${field.address}"></b>
 					<p></p>
-					<span class="text-danger font-weight-bold">[[${#numbers.formatDecimal(field.price, 0, 'COMMA', 0, 'POINT')}]].đ</span> / <span
-						class="font-weight-bold">Giờ</span>
-				
+					<span class="text-danger font-weight-bold">[[${#numbers.formatDecimal(field.price, 0, 'COMMA', 0,
+						'POINT')}]].đ</span> / <span class="font-weight-bold">Giờ</span>
+
 					<div class="border border-secondary rounded col-11 mb-4 mt-3">
 						<!-- Form tìm kiếm  -->
-<!--						<span class="ml-3 mt-4 mb-1">Chọn ngày nhận sân-->
-						 <span class="info-container">
-<!--                                        <span class="info-icon">i</span>-->
-										<span class="info-content">
-											<p>Chọn ngày để tìm kiếm giờ trống của sân này</p>
-										</span> </span>
+						<!--						<span class="ml-3 mt-4 mb-1">Chọn ngày nhận sân-->
+						<span class="info-container">
+							<!--                                        <span class="info-icon">i</span>-->
+							<span class="info-content">
+								<p>Chọn ngày để tìm kiếm giờ trống của sân này</p>
+							</span> </span>
 						</span>
-						<form  onsubmit="return validateDate()"
-							th:action="@{/field/detail/check}" method="post" class="mb-2 d-flex justify-content-center col-12 ">
+						<form onsubmit="return validateDate()" th:action="@{/field/detail/check}" method="post"
+							class="mb-2 d-flex justify-content-center col-12 ">
 							<input style="display: none;" th:value="${field.id}" name="id"></input>
-							<input style="border: 2px solid gray;font-weight: lighter;"
-								id="dateInput" name="dateInput" required
-								class="form-control mr-1 col-9" type="date"
-								placeholder="Search" aria-label="Search" th:value="${date}"/>
+							<input style="border: 2px solid gray;font-weight: lighter;" id="dateInput" name="dateInput"
+								required class="form-control mr-1 col-9" type="date" placeholder="Search"
+								aria-label="Search" th:value="${date}" />
 
-							<button style="border: 2px solid #28a745;"
-								class=" btn btn-success col-3 " type="submit">Tìm kiếm</button>
+							<button style="border: 2px solid #28a745;" class=" btn btn-success col-3 " type="submit">Tìm
+								kiếm</button>
 						</form>
 
 						<!-- End tim kiếm -->
 						<!-- Ca -->
-						
-						<div  class="col-12" th:unless="${#strings.isEmpty(date)}">
-						<span class="ml-1 mt-3 mb-1">Các giờ trống bạn có thể đặt của ngày <b class="font-weight-bold text-primary" th:text="${formattedDate}"></b></span>
-							<select style="border: 2px solid gray; font-weight: lighter;"
-								name="nameshift"
-								class=" form-control custom-select mb-3 col-12"
-								 id="inputGroupSelect01">
-								<option th:each="shiftnull : ${shiftsNull}"  th:value="${shiftnull.nameShift}">[[${shiftnull.nameShift}]]
+
+						<div class="col-12" th:unless="${#strings.isEmpty(date)}">
+							<span class="ml-1 mt-3 mb-1">Các giờ trống bạn có thể đặt của ngày <b
+									class="font-weight-bold text-primary" th:text="${formattedDate}"></b></span>
+							<select style="border: 2px solid gray; font-weight: lighter;" name="nameshift"
+								class=" form-control custom-select mb-3 col-12" id="inputGroupSelect01">
+								<option th:each="shiftnull : ${shiftsNull}" th:value="${shiftnull.nameShift}">
+									[[${shiftnull.nameShift}]]
 								</option>
-							</select>							
+							</select>
 							<!-- End ca -->
 						</div>
 					</div>
 
 					<div class=" align-self-end mb-5" th:unless="${#strings.isEmpty(date)}">
 						<a class="booking-link" th:href="@{/field/booking/{idField}(idField=${field.id})}">
-						<button th:if="${userlogged != null}" class="col-4 pt-3 pb-3 btn btn-success" style="font-size: 17px; font-weight: bold;">Đặt sân ngay</button>
+							<button th:if="${userlogged != null}" class="col-4 pt-3 pb-3 btn btn-success"
+								style="font-size: 17px; font-weight: bold;">Đặt sân ngay</button>
 						</a>
 					</div>
-		
+
 				</div>
 
 				<div class="col-12 d-flex">
 					<div class="col-6">
 						<br>
-						<h5 class="font-weight-bold"
-							style="font-family: Arial, sans-serif;">Mô tả chi tiết:</h5>
+						<h5 class="font-weight-bold" style="font-family: Arial, sans-serif;">Mô tả chi tiết:</h5>
 						<div class=""
 							style="white-space: pre-line; word-wrap: break-word; font-family: 14/ 18px Arial, sans-serif; text-align: justify; font-size: 16px; line-height: 1.5;"
 							th:utext="${field.descriptionField}"></div>
@@ -117,25 +112,22 @@
 
 					<div class="ml-5 mt-5 col-6">
 						<h4 class="col-12 mb-5">
-							Các sân liên quan đến môn <span
-								class="font-weight-bold text-info" th:text="${nameSportype}"></span>
+							Các sân liên quan đến môn <span class="font-weight-bold text-info"
+								th:text="${nameSportype}"></span>
 						</h4>
-						<div th:each="f : ${listField}"
-							class="col-12 d-flex align-items-stretch ftco-animate">
+						<div th:each="f : ${listField}" class="col-12 d-flex align-items-stretch ftco-animate">
 							<div class="blog-entry d-flex">
-								<img class="block-20 img"
-									th:src="${f.image}" alt="Image">
+								<img class="block-20 img" th:src="${f.image}" alt="Image">
 
 								<div class="text p-4 bg-light">
 									<h3 class="heading mb-3">
 										<a th:href="@{/field-detail(id=${f.id})}" th:text="${f.nameField}"></a>
 									</h3>
 									<p class="truncate-text" style="max-width: 200px;"
-										th:utext="${#strings.length(f.descriptionField) > 200 ? #strings.substring(f.descriptionField, 0, 105) + '...' : f.descriptionfield}"></p>
-									<a
-										th:href="@{/field-detail(id=${f.id})}"
-										class="btn-custom">xem chi tiết <span
-										class="fa fa-long-arrow-right"></span></a>
+										th:utext="${#strings.length(f.descriptionField) > 200 ? #strings.substring(f.descriptionField, 0, 105) + '...' : f.descriptionfield}">
+									</p>
+									<a th:href="@{/field-detail(id=${f.id})}" class="btn-custom">xem chi tiết <span
+											class="fa fa-long-arrow-right"></span></a>
 
 								</div>
 							</div>
@@ -165,67 +157,66 @@
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 	<script src="/user/js/google-map.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 	<script src="/user/js/main.js"></script>
 	<script src="/user/jscode/favoriteHeart.js"></script>
 
 	<script>
-	var dateInput = document.getElementById("dateInput");
+		var dateInput = document.getElementById("dateInput");
 
-	dateInput.oninvalid = function(event) {
-		event.target
+		dateInput.oninvalid = function (event) {
+			event.target
 				.setCustomValidity("Vui lòng chọn một ngày");
-	};
+		};
 
-	dateInput.oninput = function(event) {
-		event.target.setCustomValidity("");
-	};
+		dateInput.oninput = function (event) {
+			event.target.setCustomValidity("");
+		};
 
-	 function setMinMaxDates() {
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-            var yyyy = today.getFullYear();
+		function setMinMaxDates() {
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+			var yyyy = today.getFullYear();
 
-            var minDate = yyyy + '-' + mm + '-' + dd;
-            document.getElementById('dateInput').min = minDate;
+			var minDate = yyyy + '-' + mm + '-' + dd;
+			document.getElementById('dateInput').min = minDate;
 
-            var maxDate = (yyyy) + '-12-31'; //Cập nhật 'max' là ngày cuối cùng trong năm
-            document.getElementById('dateInput').max = maxDate;
-        }
-	 
-		
-		
+			var maxDate = (yyyy) + '-12-31'; //Cập nhật 'max' là ngày cuối cùng trong năm
+			document.getElementById('dateInput').max = maxDate;
+		}
+
+
+
 	</script>
 	<script>
-	const selectElement = document.getElementById('inputGroupSelect01');
-	  const bookingLink = document.querySelector('.booking-link');
+		const selectElement = document.getElementById('inputGroupSelect01');
+		const bookingLink = document.querySelector('.booking-link');
 
-	  // Lắng nghe sự kiện khi người dùng nhấn thẻ <a>
-	  bookingLink.addEventListener('click', function (event) {
-	    // Ngăn chặn hành động mặc định của thẻ <a> (chuyển hướng trang)
-	    event.preventDefault();
+		// Lắng nghe sự kiện khi người dùng nhấn thẻ <a>
+		bookingLink.addEventListener('click', function (event) {
+			// Ngăn chặn hành động mặc định của thẻ <a> (chuyển hướng trang)
+			event.preventDefault();
 
-	    // Lấy giá trị đang chọn từ danh sách <select>
-	    const selectedShift = selectElement.value;
+			// Lấy giá trị đang chọn từ danh sách <select>
+			const selectedShift = selectElement.value;
 
-	    // Kiểm tra xem ca sân đã chọn có hợp lệ hay không (nếu cần)
-	    // Ví dụ: if (selectedShift === '0') { alert('Vui lòng chọn một ca sân hợp lệ!'); return; }
+			// Kiểm tra xem ca sân đã chọn có hợp lệ hay không (nếu cần)
+			// Ví dụ: if (selectedShift === '0') { alert('Vui lòng chọn một ca sân hợp lệ!'); return; }
 
-	    // Lấy địa chỉ trang chuyển hướng mặc định từ thuộc tính 'href' của thẻ <a>
-	    const defaultHref = bookingLink.getAttribute('href');
+			// Lấy địa chỉ trang chuyển hướng mặc định từ thuộc tính 'href' của thẻ <a>
+			const defaultHref = bookingLink.getAttribute('href');
 
-	    // Tạo địa chỉ trang chuyển hướng mới với thông tin ca sân đã chọn
-	    const newHref = `${defaultHref}?nameshift=${encodeURIComponent(selectedShift)}`;
+			// Tạo địa chỉ trang chuyển hướng mới với thông tin ca sân đã chọn
+			const newHref = `${defaultHref}?nameshift=${encodeURIComponent(selectedShift)}`;
 
-	    // Thay đổi địa chỉ chuyển hướng của thẻ <a>
-	    bookingLink.setAttribute('href', newHref);
+			// Thay đổi địa chỉ chuyển hướng của thẻ <a>
+			bookingLink.setAttribute('href', newHref);
 
-	    // Chuyển hướng đến trang mới (có dữ liệu nameshift được gửi lên server)
-	    window.location.href = newHref;
-	  });
-	
+			// Chuyển hướng đến trang mới (có dữ liệu nameshift được gửi lên server)
+			window.location.href = newHref;
+		});
+
 	</script>
 </body>
 

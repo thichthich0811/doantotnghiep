@@ -77,11 +77,11 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12 passacc">
                                 <form action="/update-infor" method="post">
                                     <label class="lbacc">Họ tên</label>
-                                    <input th:value="${userlogged.fullName}" name="fullName" class="form-control">
+                                    <input th:value="${userlogged.fullName}" name="fullName" class="form-control" required>
                                     <label class="lbacc">Số điện thoại</label>
-                                    <input th:value="${userlogged.phone}" name="phone" class="form-control">
+                                    <input th:value="${userlogged.phone}" name="phone" class="form-control" required>
                                     <label class="lbacc">Địa chỉ</label>
-                                    <input th:value="${userlogged.address}" name="address" class="form-control">
+                                    <input th:value="${userlogged.address}" name="address" class="form-control" required>
                                     <br><button type="button" class="btnhuylogin" onclick="window.location.href='accounts'">HỦY</button>
                                     <button type="submit" class="btntt">LƯU</button>
                                 </form>

@@ -54,7 +54,6 @@ public class AccountController {
         User user = userUtils.getUserWithAuthority();
         if(passwordEncoder.matches(oldpass, user.getPassword())){
             user.setPassword(passwordEncoder.encode(newpass));
-            userRepository.save(user);
         }
         else{
             redirectAttributes.addFlashAttribute("error", "Mât khẩu cũ không chính xác");

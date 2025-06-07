@@ -56,18 +56,19 @@ public class FieldController {
     @GetMapping("/field-detail")
     public String viewDetail(Model model, @RequestParam("id") Integer id, HttpServletRequest request) {
         userlogin = (String) request.getSession().getAttribute("username");
-        Field field =  fieldDAO.findById(id).get();
+        Field field = fieldDAO.findById(id).get();
         List<Field> list = fieldDAO.findByType(field.getSporttype().getId());
 
-        model.addAttribute("field",field);
-        model.addAttribute("listField",list);
-        model.addAttribute("nameSportype",field.getSporttype().getCategoryName());
+        model.addAttribute("field", field);
+        model.addAttribute("listField", list);
+        model.addAttribute("nameSportype", field.getSporttype().getCategoryName());
 
         return "user/san-single";
     }
 
     @PostMapping("/field/detail/check")
-    public String searchShiftDefault(Model model ,@RequestParam("id") Integer idField, @RequestParam("dateInput") Date date) {
+    public String searchShiftDefault(Model model, @RequestParam("id") Integer idField,
+            @RequestParam("dateInput") Date date) {
         dateselect = date; // Ngày được chọn
         List<Shifts> shiftsempty = shiftDAO.findShiftDate(idField, date); // List ca trống thỏa mản điều kiện đầu vào
         LocalTime currentTime = LocalTime.now(); // Lấy giờ hiện tại
@@ -91,33 +92,31 @@ public class FieldController {
         String formattedDate = dateformat.format(formatter);
         // Dữ liệu hiển thị trong trang Detail
 
+        model.addAttribute("date", date);
+        model.addAttribute("formattedDate", formattedDate);
 
-        model.addAttribute("date",date);
-        model.addAttribute("formattedDate",formattedDate);
-
-        Field field =  fieldDAO.findById(idField).get();
+        Field field = fieldDAO.findById(idField).get();
         List<Field> list = fieldDAO.findByType(field.getSporttype().getId());
-        model.addAttribute("field",field);
-        model.addAttribute("listField",list);
-        model.addAttribute("nameSportype",field.getSporttype().getCategoryName());
+        model.addAttribute("field", field);
+        model.addAttribute("listField", list);
+        model.addAttribute("nameSportype", field.getSporttype().getCategoryName());
         return "user/san-single";
     }
 
-
     @GetMapping("/field/booking/{idField}")
     public String Booking(Model model, @RequestParam(value = "nameshift", required = false) String nameShift,
-                          @PathVariable Integer idField,
-                          @RequestParam(value = "voucher", required = false) String voucher,
-                          @RequestParam(name = "note", required = false) String note) {
+            @PathVariable Integer idField,
+            @RequestParam(value = "voucher", required = false) String voucher,
+            @RequestParam(name = "note", required = false) String note) {
         int discountpercent = 0; // Biến phần trăm giảm giá
         double pricevoucher = 0; // Biến tiền được giảm
-        double totalprice = 0 ; // Biến tạm tính
+        double totalprice = 0; // Biến tạm tính
         double thanhtien = 0; // Biến thành tiền
         double tiencoc = 0; // Biến tiền cọc
         double conlai = 0; // Biến tiền còn lại
         int shiftid = 0; // Biến id ca
         List<Shifts> shift = shiftDAO.findShiftByName(nameShift); // Ca được chọn ở detail
-        for(int i = 0 ; i < shift.size();i++) {
+        for (int i = 0; i < shift.size(); i++) {
             time = shift.get(i).getStartTime(); // giờ bắt đầu của ca được chọn
             shiftid = shift.get(i).getId(); // id ca được chọn
         }
@@ -133,9 +132,8 @@ public class FieldController {
         userlogin = userUtils.getUserWithAuthority().getEmail();
         if (userlogin == null) {
             // Người dùng không tồn tại hoặc thông tin đăng nhập không chính xác
-            return "redirect:/sportify/login";
-        }
-        else {
+            return "redirect:/login";
+        } else {
             // Kiểm tra đã có tài khoản đăng nhập
             List<Field> fieldListById = fieldService.findFieldById(idField); // Tìm sân theo id đã chọn
             double giasan = fieldListById.get(0).getPrice(); // giá tiền gốc của sân
@@ -163,50 +161,55 @@ public class FieldController {
                     Date startDateSql = (Date) magiamgia.get(i).getStartDate(); // Ngày bắt đầu mã giảm giá
                     LocalDate startDate = startDateSql.toLocalDate(); // Chuyển về LocalDate
                     Date endDateSql = (Date) magiamgia.get(i).getEndDate(); // Ngày kết thúc mã giảm giá
-                    LocalDate endDate = endDateSql.toLocalDate();		// Chuyển về LocalDate
+                    LocalDate endDate = endDateSql.toLocalDate(); // Chuyển về LocalDate
                     // Nếu mã giảm giá thỏa mãn điều kiện
-                    if(voucher.equals(magiamgia.get(i).getId()) && startDate.isBefore(currentDate) && endDate.isAfter(currentDate)) {
+                    if (voucher.equals(magiamgia.get(i).getCode()) && startDate.isBefore(currentDate)
+                            && endDate.isAfter(currentDate)) {
                         discountpercent = magiamgia.get(i).getDiscountPercent(); // phần trăm được giảm
                         pricevoucher = totalprice * discountpercent / 100; // tiền được giảm
                         thanhtien = totalprice - pricevoucher; // thành tiền
                         tiencoc = thanhtien * 30 / 100; // tiền phải cọc đặt sân
                         conlai = thanhtien - tiencoc; // tiền còn lại
-                        model.addAttribute("thongbaovoucher","Mã đã được áp dụng giảm " +discountpercent+"%"); // Thông báo giảm giá
+                        model.addAttribute("thongbaovoucher", "Mã đã được áp dụng giảm " + discountpercent + "%"); // thông
+                                                                                                                   // báo
+                                                                                                                   // giảm
+                                                                                                                   // giá
                         break;
-                    }
-                    else if(!voucher.equals(magiamgia.get(i).getId())) { // nếu mã giảm giá không hợp lệ
+                    } else if (!voucher.equals(magiamgia.get(i).getId())) { // nếu mã giảm giá không hợp lệ
                         thanhtien = totalprice - pricevoucher;
                         tiencoc = thanhtien * 30 / 100;
                         conlai = thanhtien - tiencoc;
-                        model.addAttribute("thongbaovoucher","Mã không hợp lệ");
+                        model.addAttribute("thongbaovoucher", "Mã không hợp lệ");
                     } // Mã giảm giá không đúng thời hạn
-                    else if(startDate.isAfter(currentDate) || endDate.isBefore(currentDate) && voucher.equals(magiamgia.get(i).getId())) {
+                    else if (startDate.isAfter(currentDate)
+                            || endDate.isBefore(currentDate) && voucher.equals(magiamgia.get(i).getId())) {
                         thanhtien = totalprice - pricevoucher;
                         tiencoc = thanhtien * 30 / 100;
                         conlai = thanhtien - tiencoc;
-                        model.addAttribute("thongbaovoucher","Mã không áp dụng hôm nay");
+                        model.addAttribute("thongbaovoucher", "Mã không áp dụng hôm nay");
                         break;
                     }
                 }
             }
             // Dữ liệu đổ lại giao diện
             model.addAttribute("note", note);
-            model.addAttribute("shiftid",shiftid);
+            model.addAttribute("shiftid", shiftid);
             model.addAttribute("pricevoucher", pricevoucher);
             model.addAttribute("conlai", conlai);
             model.addAttribute("tiencoc", tiencoc);
             model.addAttribute("thanhtien", thanhtien);
-            model.addAttribute("listvoucher",magiamgia);
-            model.addAttribute("nameShift",nameShift);
-            model.addAttribute("dateselect",dateselect);
-            model.addAttribute("nameSportype",nameSportype);
-            model.addAttribute("formattedDate",formattedDate);
-            model.addAttribute("fieldListById",fieldListById);
+            model.addAttribute("listvoucher", magiamgia);
+            model.addAttribute("nameShift", nameShift);
+            model.addAttribute("dateselect", dateselect);
+            model.addAttribute("nameSportype", nameSportype);
+            model.addAttribute("formattedDate", formattedDate);
+            model.addAttribute("fieldListById", fieldListById);
 
         }
         // Gọi trang checkout
         return "user/checkout-dat-san";
     }
+
     @PostMapping("/getIp/create")
     public String createPayment(
             @RequestParam("amount") String inputMoney, HttpServletRequest request, HttpSession session,
@@ -227,36 +230,36 @@ public class FieldController {
         newbooking.setBookingStatus(BookingStatus.DA_COC);
 
         newbookingdetail.setPlaydate(playdateSt);
-        newbookingdetail.setPrice(priceField);
+        newbookingdetail.setPrice(bookingprice);
         newbookingdetail.setField(fieldDAO.findById(fieldid).get());
         newbookingdetail.setShifts(shiftDAO.findById(shiftid).get());
         session.setAttribute("booking", newbooking);
         session.setAttribute("bookingDetail", newbookingdetail);
         String orderId = String.valueOf(System.currentTimeMillis());
-        String vnpayUrl = vnPayService.createOrder(priceField.intValue() * 30 / 100, orderId, "http://localhost:8080/checkpayment");
+        String vnpayUrl = vnPayService.createOrder(bookingprice.intValue() * 30 / 100, orderId,
+                "http://localhost:8080/checkpayment");
 
-        return "redirect:"+vnpayUrl;
+        return "redirect:" + vnpayUrl;
     }
 
     @GetMapping("/checkpayment")
-    public String checkPayment(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession session){
+    public String checkPayment(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession session) {
         int check = vnPayService.orderReturn(request);
-        if(check == 1){
+        if (check == 1) {
             Bookings bookings = (Bookings) session.getAttribute("booking");
             Bookingdetails bookingDetail = (Bookingdetails) session.getAttribute("bookingDetail");
             bookingDAO.save(bookings);
             bookingDetail.setBookings(bookings);
             bookingDetailDAO.save(bookingDetail);
-            redirectAttributes.addFlashAttribute("success","Thanh toán thành công");
+            redirectAttributes.addFlashAttribute("success", "Thanh toán thành công");
             return "redirect:/taikhoan#history";
-        }
-        else{
+        } else {
             return "redirect:/payment-error";
         }
     }
 
     @GetMapping("/payment-error")
-    public String errorPayemtn(RedirectAttributes redirectAttributes, HttpSession session){
+    public String errorPayemtn(RedirectAttributes redirectAttributes, HttpSession session) {
         session.removeAttribute("booking");
         session.removeAttribute("bookingDetail");
         redirectAttributes.addFlashAttribute("error", "Thanh toán thất bại");
@@ -265,20 +268,20 @@ public class FieldController {
 
     @GetMapping("/field")
     public String viewField(Model model, @RequestParam(required = false) Integer typeId,
-                            @RequestParam(required = false) Date date, @RequestParam(required = false) Integer shiftId) {
+            @RequestParam(required = false) Date date, @RequestParam(required = false) Integer shiftId) {
         List<Field> list = null;
-        if(typeId == null && date == null && shiftId == null){
+        if (typeId == null && date == null && shiftId == null) {
             list = fieldDAO.findAllActive();
         }
-        if(typeId != null && date == null && shiftId == null){
+        if (typeId != null && date == null && shiftId == null) {
             list = fieldDAO.findBySporttypeIdActive(typeId);
         }
-        if(typeId != null && date != null && shiftId != null){
+        if (typeId != null && date != null && shiftId != null) {
             list = fieldDAO.findSearch(date, typeId, shiftId);
-            model.addAttribute("thongbao","Kết quả tìm kiếm sân trống: ");
-            model.addAttribute("namesporttype",sportTypeDAO.findById(typeId).get().getCategoryName());
-            model.addAttribute("nameshift",shiftDAO.findById(shiftId).get().getNameShift());
-            model.addAttribute("formattedDate",date);
+            model.addAttribute("thongbao", "Kết quả tìm kiếm sân trống: ");
+            model.addAttribute("namesporttype", sportTypeDAO.findById(typeId).get().getCategoryName());
+            model.addAttribute("nameshift", shiftDAO.findById(shiftId).get().getNameShift());
+            model.addAttribute("formattedDate", date);
 
         }
         model.addAttribute("listField", list);

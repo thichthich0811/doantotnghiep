@@ -2,187 +2,191 @@
 <html class="fixed" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <head th:replace="fragment/libAdmin :: libheaderadmin"></head>
     <script src="js/menu.js"></script>
 </head>
 
 <body>
-<section class="body">
-    <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
-    <div class="inner-wrapper">
-        <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
-        <section role="main" class="content-body" id="main-content">
-            <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
-            <div class="row">
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-lefts shadow h-100 py-2">
-                        <span class="lbcard">Phiếu đặt hàng trong ngày</span>
-                        <span class='solieudoanhthu' th:text="${countOrderInDate}">0</span>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-lefts shadow h-100 py-2">
-                        <span class="lbcard">Phiếu đặt sân trong ngày</span>
-                        <span class='solieudoanhthu' th:text="${countBookingInDate}">0</span>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-lefts shadow h-100 py-2">
-                        <span class="lbcard">Sân đang hoạt động</span>
-                        <span class='solieudoanhthu' th:text="${countFieldActiving}">0</span>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-lefts shadow h-100 py-2">
-                        <span class="lbcard">Sản phẩm đang bày bán</span>
-                        <span class='solieudoanhthu' th:text="${countProductActive}">0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="divgopy">
-                <span>Góp ý trong ngày của khách hàng trong ngày <span th:text="${listContactToday.size()}" class="sogopy"></span></span>
-            </div>
-            <table id="example" class="table table-striped tablefix">
-                <thead class="thead-tablefix">
-                <tr>
-                    <th>#</th>
-                    <th>Người liên hệ</th>
-                    <th>Ngày yêu cầu</th>
-                    <th>Loại liên hệ</th>
-                    <th>Tiêu đề</th>
-                    <th class="text-right no-sort">Nội dung</th>
-                </tr>
-                </thead>
-                <tbody id="listcate">
-                <tr th:each="c, iterStat : ${listContactToday}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${c.user == null?'':c.user.email}"></td>
-                    <td th:text="${c.datecontact}"></td>
-                    <td th:text="${c.category}"></td>
-                    <td th:text="${c.title}"></td>
-                    <td th:text="${c.meesagecontact}"></td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div class="row" ng-show="kiemDuyet === 'ok'">
-                <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
-                        <div class="card-header">
-                            <h3 class="card-title mb-0">Top 3 sân được đặt nhiều nhất</h3>
+    <section class="body">
+        <th:block th:replace="fragment/sidebarAdmin :: headerAdmin"></th:block>
+        <div class="inner-wrapper">
+            <th:block th:replace="fragment/sidebarAdmin :: sidenavAdmin"></th:block>
+            <section role="main" class="content-body" id="main-content">
+                <th:block th:replace="fragment/sidebarAdmin :: pageHeader"></th:block>
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-lefts shadow h-100 py-2">
+                            <span class="lbcard">Phiếu đặt hàng trong ngày</span>
+                            <span class='solieudoanhthu' th:text="${countOrderInDate}">0</span>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-nowrap custom-table mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên sân</th>
-                                        <th>Giá sân</th>
-                                        <th>Số lần đặt</th>
-                                        <th>Doanh thu</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="c, iterStat : ${top3SanDatNhieu}">
-                                        <td th:text="${iterStat.index + 1}"></td>
-                                        <td th:text="${c[0]}"></td>
-                                        <td>[[${#numbers.formatDecimal(c.[1], 0, 'COMMA', 0, 'POINT')}]].đ</td>
-                                        <td th:text="${c[2] == null ? 0 : c[2]}"></td>
-                                        <td th:text="${#numbers.formatDecimal(c.[3], 0, 'COMMA', 0, 'POINT')}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-lefts shadow h-100 py-2">
+                            <span class="lbcard">Phiếu đặt sân trong ngày</span>
+                            <span class='solieudoanhthu' th:text="${countBookingInDate}">0</span>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-lefts shadow h-100 py-2">
+                            <span class="lbcard">Sân đang hoạt động</span>
+                            <span class='solieudoanhthu' th:text="${countFieldActiving}">0</span>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-lefts shadow h-100 py-2">
+                            <span class="lbcard">Sản phẩm đang bày bán</span>
+                            <span class='solieudoanhthu' th:text="${countProductActive}">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="divgopy">
+                    <span>Góp ý trong ngày của khách hàng trong ngày <span th:text="${listContactToday.size()}"
+                            class="sogopy"></span></span>
+                </div>
+                <table id="example" class="table table-striped tablefix">
+                    <thead class="thead-tablefix">
+                        <tr>
+                            <th>#</th>
+                            <th>Người liên hệ</th>
+                            <th>Ngày yêu cầu</th>
+                            <th>Loại liên hệ</th>
+                            <th>Tiêu đề</th>
+                            <th class="text-right no-sort">Nội dung</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listcate">
+                        <tr th:each="c, iterStat : ${listContactToday}">
+                            <td th:text="${iterStat.index + 1}"></td>
+                            <td th:text="${c.user == null?'':c.user.email}"></td>
+                            <td th:text="${c.datecontact}"></td>
+                            <td th:text="${c.category}"></td>
+                            <td th:text="${c.title}"></td>
+                            <td th:text="${c.meesagecontact}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row" ng-show="kiemDuyet === 'ok'">
+                    <div class="col-md-6 d-flex">
+                        <div class="card card-table flex-fill">
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Top 3 sân được đặt nhiều nhất</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap custom-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên sân</th>
+                                                <th>Giá sân</th>
+                                                <th>Số lần đặt</th>
+                                                <th>Doanh thu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="c, iterStat : ${top3SanDatNhieu}">
+                                                <td th:text="${iterStat.index + 1}"></td>
+                                                <td th:text="${c[0]}"></td>
+                                                <td>[[${#numbers.formatDecimal(c.[1], 0, 'COMMA', 0, 'POINT')}]].đ</td>
+                                                <td th:text="${c[2] == null ? 0 : c[2]}"></td>
+                                                <td th:text="${#numbers.formatDecimal(c.[3], 0, 'COMMA', 0, 'POINT')}">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/admin/fields">Xem tất cả sân</a>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="/admin/fields">Xem tất cả sân</a>
-                        </div>
                     </div>
-                </div>
-                <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
-                        <div class="card-header">
-                            <h3 class="card-title mb-0">Top 3 sản phẩm bán được nhiều
-                                nhất</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table custom-table table-nowrap mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giá sản phẩm</th>
-                                        <th>Số lượt bán</th>
-                                        <th>Doanh thu</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="c, iterStat : ${top3SanPhamNhieu}">
-                                        <td th:text="${iterStat.index + 1}"></td>
-                                        <td th:text="${c[0]}"></td>
-                                        <td>[[${#numbers.formatDecimal(c.[1], 0, 'COMMA', 0, 'POINT')}]].đ</td>
-                                        <td th:text="${c[2] == null ? 0 : c[2]}"></td>
-                                        <td th:text="${#numbers.formatDecimal(c.[3], 0, 'COMMA', 0, 'POINT')}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <div class="col-md-6 d-flex">
+                        <div class="card card-table flex-fill">
+                            <div class="card-header">
+                                <h3 class="card-title mb-0">Top 3 sản phẩm bán được nhiều
+                                    nhất</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table custom-table table-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Giá sản phẩm</th>
+                                                <th>Số lượt bán</th>
+                                                <th>Doanh thu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="c, iterStat : ${top3SanPhamNhieu}">
+                                                <td th:text="${iterStat.index + 1}"></td>
+                                                <td th:text="${c[0]}"></td>
+                                                <td>[[${#numbers.formatDecimal(c.[1], 0, 'COMMA', 0, 'POINT')}]].đ</td>
+                                                <td th:text="${c[2] == null ? 0 : c[2]}"></td>
+                                                <td th:text="${#numbers.formatDecimal(c.[3], 0, 'COMMA', 0, 'POINT')}">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/admin/product">Xem tất cả sản phẩm</a>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <a href="/admin/product">Xem tất cả sản phẩm</a>
+                    </div>
+                </div>
+
+                <form class="col-sm-12 header-sp row ">
+                    <div class="col-md-3">
+                        <p class="loctheongay">Chọn năm cần xem</p>
+                        <select th:id="year" name="year" class="form-control">
+                            <option id="2025">2025</option>
+                            <option id="2026">2026</option>
+                            <option id="2027">2027</option>
+                            <option id="2028">2028</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="loctheongay">&ThinSpace;</p>
+                        <button class="btn btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-6 divtale">
+                        <div class="card chart-container divtale">
+                            <canvas id="chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 divtale">
+                        <div class="card chart-container divtale">
+                            <canvas id="chartbooking"></canvas>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <form class="col-sm-12 header-sp row ">
-                <div class="col-md-3">
-                    <p class="loctheongay">Chọn năm cần xem</p>
-                    <select th:id="year" name="year" class="form-control">
-                        <option id="2025">2025</option>
-                        <option id="2026">2026</option>
-                        <option id="2027">2027</option>
-                        <option id="2028">2028</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <p class="loctheongay">&ThinSpace;</p>
-                    <button class="btn btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button>
-                </div>
-            </form>
-           <div class="row">
-               <div class="col-sm-6 divtale">
-                   <div class="card chart-container divtale">
-                       <canvas id="chart"></canvas>
-                   </div>
-               </div>
-               <div class="col-sm-6 divtale">
-                   <div class="card chart-container divtale">
-                       <canvas id="chartbooking"></canvas>
-                   </div>
-               </div>
-           </div>
-        </section>
-    </div>
-</section>
-<th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
+            </section>
+        </div>
+    </section>
+    <th:block th:replace="fragment/libAdmin :: jdadmin"></th:block>
 </body>
 <script>
-    window.onload = function() {
+    window.onload = function () {
         getMauSac();
     }
 </script>
 <script>
-    function getMauSac(){
-        var arr = ['#4e73df','#1cc88a','#36b9cc','#eb9534','#ed00c6','#edd500']
+    function getMauSac() {
+        var arr = ['#4e73df', '#1cc88a', '#36b9cc', '#eb9534', '#ed00c6', '#edd500']
         var act = document.getElementsByClassName("border-lefts");
         var lbcard = document.getElementsByClassName("lbcard");
-        for(var i=0; i<act.length; i++){
-            act[i].style.borderLeft = '.25rem solid '+arr[i]
+        for (var i = 0; i < act.length; i++) {
+            act[i].style.borderLeft = '.25rem solid ' + arr[i]
         }
-        for(var i=0; i<lbcard.length; i++){
+        for (var i = 0; i < lbcard.length; i++) {
             lbcard[i].style.color = arr[i]
         }
     }
@@ -198,14 +202,13 @@
 <script th:inline="javascript">
     var nam = document.getElementById("year").value
     // Lấy dữ liệu từ Thymeleaf và chuyển sang JavaScript
-    var list = /*[[${orderPoints}]]*/ [];
+    var list = /*[[${orderPoints}]]*/[];
     var main = '';
     for (i = 0; i < list.length; i++) {
         if (list[i] == null) {
             list[i] = 0
         }
     }
-
 
     var lb = 'doanh thu đơn hàng năm ' + nam;
     var ctx = document.getElementById("chart").getContext('2d');
@@ -226,7 +229,7 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        callback: function(value) {
+                        callback: function (value) {
                             return formatmoney(value);
                         }
                     }
@@ -239,7 +242,7 @@
 <script th:inline="javascript">
     var nam = document.getElementById("year").value
     // Lấy dữ liệu từ Thymeleaf và chuyển sang JavaScript
-    var list = /*[[${bookingPoints}]]*/ [];
+    var list = /*[[${bookingPoints}]]*/[];
     console.log(list)
     var main = '';
     for (i = 0; i < list.length; i++) {
@@ -268,7 +271,7 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        callback: function(value) {
+                        callback: function (value) {
                             return formatmoney(value);
                         }
                     }
@@ -278,4 +281,5 @@
     });
 
 </script>
+
 </html>

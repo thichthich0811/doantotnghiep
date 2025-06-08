@@ -2,7 +2,6 @@ package com.web.vnpay;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +11,7 @@ import java.util.*;
 @Service
 public class VNPayService {
 
-    public String createOrder(int total, String orderInfor, String urlReturn){
+    public String createOrder(int total, String orderInfor, String urlReturn) {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
@@ -24,7 +23,7 @@ public class VNPayService {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(total*100));
+        vnp_Params.put("vnp_Amount", String.valueOf(total * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
@@ -55,12 +54,12 @@ public class VNPayService {
             String fieldName = (String) itr.next();
             String fieldValue = (String) vnp_Params.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                //Build hash data
+                // Build hash data
                 hashData.append(fieldName);
                 hashData.append('=');
                 try {
                     hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                    //Build query
+                    // Build query
                     query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
                     query.append('=');
                     query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
@@ -80,7 +79,7 @@ public class VNPayService {
         return paymentUrl;
     }
 
-    public int orderReturn(HttpServletRequest request){
+    public int orderReturn(HttpServletRequest request) {
         Map fields = new HashMap();
         for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
             String fieldName = null;
@@ -115,8 +114,7 @@ public class VNPayService {
         }
     }
 
-
-    public int orderReturnByUrl(String input){
+    public int orderReturnByUrl(String input) {
         Map<String, String> fields = new HashMap<>();
 
         // Tách từng tham số và thêm vào HashMap
@@ -149,4 +147,3 @@ public class VNPayService {
         }
     }
 }
-

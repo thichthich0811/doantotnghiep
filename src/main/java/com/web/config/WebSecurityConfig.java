@@ -1,4 +1,5 @@
 package com.web.config;
+
 import com.web.exception.UserNotActivatedException;
 import com.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class WebSecurityConfig  {
+public class WebSecurityConfig {
     @Autowired
     private CustomLoginSuccessHandler customLoginSuccessHandler;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
@@ -38,8 +41,7 @@ public class WebSecurityConfig  {
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/gio-hang").hasAuthority("ROLE_USER")
                         .requestMatchers("/checkout").hasAuthority("ROLE_USER")
-                        .anyRequest().permitAll()
-                )
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         .invalidSessionUrl("/login?expired") // Redirect nếu session bị mất
                         .maximumSessions(1) // Chặn login cùng lúc ở nhiều nơi (optional)
@@ -49,29 +51,25 @@ public class WebSecurityConfig  {
                         .loginPage("/login")
                         .failureHandler(customAuthenticationFailureHandler)
                         .successHandler(customLoginSuccessHandler)
-                        .permitAll()
-                )
+                        .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/logout")  // URL xử lý logout
-                        .logoutSuccessUrl("/login")  // Chuyển hướng sau khi logout thành công
-                        .invalidateHttpSession(true)  // Xóa session
-                        .deleteCookies("JSESSIONID")  // Xóa cookie nếu cần
-                        .permitAll()
-                )
+                        .logoutUrl("/logout") // URL xử lý logout
+                        .logoutSuccessUrl("/login") // Chuyển hướng sau khi logout thành công
+                        .invalidateHttpSession(true) // Xóa session
+                        .deleteCookies("JSESSIONID") // Xóa cookie nếu cần
+                        .permitAll())
                 .authenticationProvider(authenticationProvider())
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling
-                                .authenticationEntryPoint((request, response, authException) -> {
-                                    if (authException instanceof UserNotActivatedException) {
-                                        String email = ((UserNotActivatedException) authException).getEmail();
-                                        System.out.println("active exception");
-                                        response.sendRedirect("/confirm?email="+email);
-                                    } else {
-                                        System.out.println("another exception");
-                                        response.sendRedirect("/login?error");
-                                    }
-                                })
-                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            if (authException instanceof UserNotActivatedException) {
+                                String email = ((UserNotActivatedException) authException).getEmail();
+                                System.out.println("active exception");
+                                response.sendRedirect("/confirm?email=" + email);
+                            } else {
+                                System.out.println("another exception");
+                                response.sendRedirect("/login?error");
+                            }
+                        }))
                 .build();
     }
 
@@ -101,6 +99,7 @@ public class WebSecurityConfig  {
             return userDetails;
         };
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -108,6 +107,7 @@ public class WebSecurityConfig  {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

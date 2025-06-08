@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -20,17 +19,18 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+            HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
         String email = authentication.getName();
 
         Optional<User> user = userRepository.findByEmail(email);
-        if(user.get().getRole().equals(Role.ROLE_USER)){
+        if (user.get().getRole().equals(Role.ROLE_USER)) {
             response.sendRedirect("/");
         }
-        if(user.get().getRole().equals(Role.ROLE_ADMIN)){
+        if (user.get().getRole().equals(Role.ROLE_ADMIN)) {
             response.sendRedirect("/admin/tai-khoan");
         }
     }

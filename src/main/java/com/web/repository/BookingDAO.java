@@ -14,23 +14,14 @@ public interface BookingDAO extends JpaRepository<Bookings, Long> {
 	int countBookingInDate();
 
 	@Query("select b from Bookings b where b.user.id = ?1")
-    List<Bookings> findByUser(Long id);
+	List<Bookings> findByUser(Long id);
 
 	@Query("select b from Bookings b where b.bookingDate between ?1 and ?2")
-    List<Bookings> findByDate(Date from, Date to);
+	List<Bookings> findByDate(Date from, Date to);
 
 	@Query("select b from Bookings b where b.bookingDate between ?1 and ?2 and b.bookingStatus = ?3")
 	List<Bookings> findByDateAndTrangThai(Date from, Date to, String trangThaiThanhToan);
 
-	@Query(value = "SELECT \n" +
-			"    IFNULL((\n" +
-			"        SELECT SUM(b.booking_price) FROM bookings b WHERE MONTH(b.booking_date) = ?1 \n" +
-			"        AND YEAR(b.booking_date) = ?2 AND b.booking_status = 'Đã Thanh Toán'\n" +
-			"    ), 0)\n" +
-			"    +\n" +
-			"    IFNULL((\n" +
-			"        SELECT SUM(b.booking_price * 0.3) FROM bookings b WHERE MONTH(b.booking_date) = ?1 \n" +
-			"          AND YEAR(b.booking_date) = ?2 AND b.booking_status = 'Đã Cọc'\n" +
-			"    ), 0) AS tong\n",nativeQuery = true)
+	@Query(value = "SELECT IFNULL((SELECT SUM(b.booking_price) FROM bookings b WHERE MONTH(b.booking_date) = ?1 AND YEAR(b.booking_date) = ?2 AND b.booking_status = 'Đã Thanh Toán'), 0) + IFNULL((SELECT SUM(b.booking_price * 0.3) FROM bookings b WHERE MONTH(b.booking_date) = ?1 AND YEAR(b.booking_date) = ?2 AND b.booking_status = 'Đã Cọc'), 0) AS tong", nativeQuery = true)
 	Double calDt(int i, Integer year);
 }

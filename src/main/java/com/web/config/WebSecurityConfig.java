@@ -43,20 +43,19 @@ public class WebSecurityConfig {
                         .requestMatchers("/checkout").hasAuthority("ROLE_USER")
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session
-                        .invalidSessionUrl("/login?expired") // Redirect nếu session bị mất
-                        .maximumSessions(1) // Chặn login cùng lúc ở nhiều nơi (optional)
-                        .maxSessionsPreventsLogin(false) // Cho login mới, đá login cũ ra
-                )
+                        .invalidSessionUrl("/login?expired")
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureHandler(customAuthenticationFailureHandler)
                         .successHandler(customLoginSuccessHandler)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // URL xử lý logout
-                        .logoutSuccessUrl("/login") // Chuyển hướng sau khi logout thành công
-                        .invalidateHttpSession(true) // Xóa session
-                        .deleteCookies("JSESSIONID") // Xóa cookie nếu cần
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(exceptionHandling -> exceptionHandling

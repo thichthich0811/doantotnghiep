@@ -62,7 +62,6 @@ public class FieldController {
         model.addAttribute("field", field);
         model.addAttribute("listField", list);
         model.addAttribute("nameSportype", field.getSporttype().getCategoryName());
-
         return "user/san-single";
     }
 
@@ -104,7 +103,8 @@ public class FieldController {
     }
 
     @GetMapping("/field/booking/{idField}")
-    public String Booking(Model model, @RequestParam(value = "nameshift", required = false) String nameShift,
+    public String Booking(RedirectAttributes redirectAttributes, Model model,
+            @RequestParam(value = "nameshift", required = false) String nameShift,
             @PathVariable Integer idField,
             @RequestParam(value = "voucher", required = false) String voucher,
             @RequestParam(name = "note", required = false) String note) {
@@ -115,7 +115,16 @@ public class FieldController {
         double tiencoc = 0; // Biến tiền cọc
         double conlai = 0; // Biến tiền còn lại
         int shiftid = 0; // Biến id ca
+        List<Shifts> shiftsempty = shiftDAO.findShiftDate(idField, dateselect); // List ca trống thỏa mản điều kiện đầu
+                                                                                // vào
         List<Shifts> shift = shiftDAO.findShiftByName(nameShift); // Ca được chọn ở detail
+        boolean hasOverlap = shiftsempty.stream()
+                .anyMatch(s1 -> shift.stream()
+                        .anyMatch(s2 -> s1.getId().equals(s2.getId())));
+        if (!hasOverlap) {
+            redirectAttributes.addFlashAttribute("error", "Sân đã được đặt");
+            return "redirect:/field";
+        }
         for (int i = 0; i < shift.size(); i++) {
             time = shift.get(i).getStartTime(); // giờ bắt đầu của ca được chọn
             shiftid = shift.get(i).getId(); // id ca được chọn
@@ -170,10 +179,7 @@ public class FieldController {
                         thanhtien = totalprice - pricevoucher; // thành tiền
                         tiencoc = thanhtien * 30 / 100; // tiền phải cọc đặt sân
                         conlai = thanhtien - tiencoc; // tiền còn lại
-                        model.addAttribute("thongbaovoucher", "Mã đã được áp dụng giảm " + discountpercent + "%"); // thông
-                                                                                                                   // báo
-                                                                                                                   // giảm
-                                                                                                                   // giá
+                        model.addAttribute("thongbaovoucher", "Mã đã được áp dụng giảm " + discountpercent + "%");
                         break;
                     } else if (!voucher.equals(magiamgia.get(i).getId())) { // nếu mã giảm giá không hợp lệ
                         thanhtien = totalprice - pricevoucher;
@@ -219,7 +225,6 @@ public class FieldController {
             @RequestParam("pricefield") Double priceField) {
         Bookings newbooking = new Bookings();
         Bookingdetails newbookingdetail = new Bookingdetails();
-
         User user = userUtils.getUserWithAuthority();
         newbooking.setUser(user);
         newbooking.setBookingDate(new Date(System.currentTimeMillis()));

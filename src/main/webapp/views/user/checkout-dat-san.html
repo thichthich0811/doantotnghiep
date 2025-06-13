@@ -393,7 +393,12 @@
 					}
 				});
 	</script>
-
+	<script th:inline="javascript">
+		var error = /*[[${error}]]*/ 'default';
+		if (error != null) {
+			toastr.error(error);
+		}
+	</script>
 </body>
 
 </html>
